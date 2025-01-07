@@ -30,3 +30,6 @@ alloy:
       discovery.kubernetes "ingresses" {
         role = "ingress"
       }
+      prometheus.remote_write "Alloy"{
+        url = "http://10.96.135.94:9009/api/v1/push"
+      }

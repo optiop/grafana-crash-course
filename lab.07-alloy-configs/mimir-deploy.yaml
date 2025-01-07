@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mimir
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mimir
+  template:
+    metadata:
+      labels:
+        app: mimir
+    spec:
+      containers:
+        - name: mimir
+          image: grafana/mimir:latest  
+          ports:
+            - containerPort: 9009
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+          volumeMounts:
+            - name: mimir-storage
+              mountPath: /data
+            - name: config-volume
+              mountPath: /etc/mimir/mimir.yaml
+              subPath: mimir.yaml  
+          args:
+            - -config.file=/etc/mimir/mimir.yaml
+      volumes:
+        - name: mimir-storage
+          emptyDir: {}
+        - name: config-volume
+          configMap:
+            name: mimir-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mimir
+spec:
+  selector:
+    app: mimir
+  ports:
+    - protocol: TCP
+      port: 9009
+      targetPort: 9009

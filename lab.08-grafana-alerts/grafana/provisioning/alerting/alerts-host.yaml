@@ -16,7 +16,7 @@ groups:
             datasourceUid: PBFA97CFB590B2093
             model:
               editorMode: code
-              expr: "((node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes and ON (instance, device, mountpoint) node_filesystem_readonly == 0) * on(instance) group_left (nodename) node_uname_info{nodename=~\".+\"}"
+              expr: '((node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes and ON (instance, device, mountpoint) node_filesystem_readonly == 0) * on(instance) group_left (nodename) node_uname_info{nodename=~".+"}'
               instant: true
               intervalMs: 1000
               legendFormat: __auto
@@ -27,23 +27,23 @@ groups:
             datasourceUid: __expr__
             model:
               conditions:
-                  - evaluator:
-                      params:
-                          - 100
-                          - 0
-                      type: lt
-                    operator:
-                      type: and
-                    query:
-                      params: []
-                    reducer:
-                      params: []
-                      type: avg
-                    type: query
+                - evaluator:
+                    params:
+                      - 100
+                      - 0
+                    type: lt
+                  operator:
+                    type: and
+                  query:
+                    params: []
+                  reducer:
+                    params: []
+                    type: avg
+                  type: query
               datasource:
-                  name: Expression
-                  type: __expr__
-                  uid: __expr__
+                name: Expression
+                type: __expr__
+                uid: __expr__
               expression: A
               hide: false
               intervalMs: 1000
@@ -75,7 +75,7 @@ groups:
             model:
               editorMode: code
               expr: |
-                  (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100 ) * on(instance) group_left (nodename) node_uname_info{nodename=~".+"}
+                (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100 ) * on(instance) group_left (nodename) node_uname_info{nodename=~".+"}
               instant: true
               intervalMs: 1000
               legendFormat: __auto
@@ -86,23 +86,23 @@ groups:
             datasourceUid: __expr__
             model:
               conditions:
-                  - evaluator:
-                      params:
-                          - 10
-                          - 0
-                      type: lt
-                    operator:
-                      type: and
-                    query:
-                      params: []
-                    reducer:
-                      params: []
-                      type: avg
-                    type: query
+                - evaluator:
+                    params:
+                      - 10
+                      - 0
+                    type: lt
+                  operator:
+                    type: and
+                  query:
+                    params: []
+                  reducer:
+                    params: []
+                    type: avg
+                  type: query
               datasource:
-                  name: Expression
-                  type: __expr__
-                  uid: __expr__
+                name: Expression
+                type: __expr__
+                uid: __expr__
               expression: A
               hide: false
               intervalMs: 1000

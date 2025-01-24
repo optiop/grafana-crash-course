@@ -17,18 +17,18 @@ common:
 
 schema_config:
   configs:
-  - from: 2020-05-15
-    store: tsdb
-    object_store: filesystem
-    schema: v13
-    index:
-      prefix: index_
-      period: 24h
+    - from: 2020-05-15
+      store: tsdb
+      object_store: filesystem
+      schema: v13
+      index:
+        prefix: index_
+        period: 24h
 
 storage_config:
   filesystem:
     directory: /tmp/loki/chunks
-                 
+
 ruler:
   storage:
     type: local
@@ -36,4 +36,4 @@ ruler:
       directory: /etc/loki/rules
   rule_path: /etc/loki/rules
   alertmanager_url: http://alertmanager:9093
-  enable_api: true   
+  enable_api: true

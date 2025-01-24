@@ -1,0 +1,124 @@
+apiVersion: 1
+groups:
+  - orgId: 1
+    name: Host Alerts
+    folder: Host
+    interval: 1m
+    rules:
+      - title: Host out of disk space
+        uid: deaana6jduewwb
+        condition: A
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: PBFA97CFB590B2093
+            model:
+              editorMode: code
+              expr: '((node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes and ON (instance, device, mountpoint) node_filesystem_readonly == 0) * on(instance) group_left (nodename) node_uname_info{nodename=~".+"}'
+              instant: true
+              intervalMs: 1000
+              legendFormat: __auto
+              maxDataPoints: 43200
+              range: false
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 100
+                      - 0
+                    type: lt
+                  operator:
+                    type: and
+                  query:
+                    params: []
+                  reducer:
+                    params: []
+                    type: avg
+                  type: query
+              datasource:
+                name: Expression
+                type: __expr__
+                uid: __expr__
+              expression: A
+              hide: false
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: B
+              type: threshold
+        noDataState: NoData
+        execErrState: Error
+        for: 0m
+        annotations:
+          description: Disk is almost full (< 10% left)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}
+          runbook_url: https://optiop.org
+          summary: Host out of disk space - instance {{ $labels.instance }}
+        labels:
+          category: host
+          severity: critical
+        isPaused: false
+        notification_settings:
+          receiver: grafana-default-email
+      - title: Host out of memory
+        uid: ceaaq1h2y80sgd
+        condition: A
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: PBFA97CFB590B2093
+            model:
+              editorMode: code
+              expr: |
+                (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100 ) * on(instance) group_left (nodename) node_uname_info{nodename=~".+"}
+              instant: true
+              intervalMs: 1000
+              legendFormat: __auto
+              maxDataPoints: 43200
+              range: false
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 10
+                      - 0
+                    type: lt
+                  operator:
+                    type: and
+                  query:
+                    params: []
+                  reducer:
+                    params: []
+                    type: avg
+                  type: query
+              datasource:
+                name: Expression
+                type: __expr__
+                uid: __expr__
+              expression: A
+              hide: false
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: B
+              type: threshold
+        noDataState: NoData
+        execErrState: Error
+        for: 5m
+        annotations:
+          description: Memory is almost full (< 20% left)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}
+          runbook_url: https://optiop.org
+          summary: Host out of memory - instance {{ $labels.instance }}
+        labels:
+          category: host
+          severity: critical
+        isPaused: false
+        notification_settings:
+          receiver: grafana-default-email

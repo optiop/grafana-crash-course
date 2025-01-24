@@ -1,0 +1,56 @@
+alloy:
+  configMap:
+    content: |
+      logging {
+        level  = "info"
+        format = "logfmt"
+      }
+
+      discovery.kubernetes "pods" {
+        role = "pod"
+      }
+
+      discovery.kubernetes "nodes" {
+        role = "node"
+      }
+
+      discovery.kubernetes "services" {
+        role = "service"
+      }
+
+      discovery.kubernetes "endpoints" {
+        role = "endpoints"
+      }
+
+      discovery.kubernetes "endpointslices" {
+        role = "endpointslice"
+      }
+
+      discovery.kubernetes "ingresses" {
+        role = "ingress"
+      }
+
+      prometheus.exporter.unix "nodeexporter" {
+
+      }
+
+      prometheus.scrape "nodeexporter" {
+        job_name = "node-exporter"
+        targets  = prometheus.exporter.unix.nodeexporter.targets
+        scheme   = "http"
+
+        forward_to = [prometheus.remote_write.cloud.receiver]
+      }
+
+
+      prometheus.remote_write "cloud" {
+        endpoint {
+            name = "hosted-prometheus"
+            url  = "https://prometheus-prod-24-prod-eu-west-2.grafana.net/api/prom/push"
+        
+            basic_auth {
+              username = ""
+              password = ""
+            }
+        }
+      }

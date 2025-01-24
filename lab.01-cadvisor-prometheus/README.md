@@ -29,4 +29,4 @@ Checkout the services
 
 ## References
 
-[Failed to get docker info in MacOS](https://github.com/google/cadvisor/issues/1565)
+[Failed to get docker info in macOS](https://github.com/google/cadvisor/issues/1565)

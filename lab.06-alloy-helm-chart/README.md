@@ -19,6 +19,7 @@ kubectl port-forward service/alloy 12345:12345
 ```
 
 At the end, you can remove the kind cluster.
+
 ```bash
 kind delete cluster --name alloy-helm-chart
 ```

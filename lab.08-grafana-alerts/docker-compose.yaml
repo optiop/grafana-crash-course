@@ -1,0 +1,57 @@
+services:
+  node-exporter:
+    image: prom/node-exporter
+    ports:
+      - 9100:9100
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - "--path.procfs=/host/proc"
+      - "--path.rootfs=/rootfs"
+      - "--path.sysfs=/host/sys"
+
+  prometheus:
+    image: prom/prometheus:latest
+    command:
+      - --config.file=/etc/prometheus/prometheus.yaml
+    volumes:
+      - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
+    ports:
+      - 9090:9090
+
+  grafana:
+    image: grafana/grafana:11.4.0
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      GF_LOG_LEVEL: critical
+      GF_AUTH_ANONYMOUS_ENABLED: true
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: grafana
+      GF_SECURITY_ALLOW_EMBEDDING: true
+      GF_SMTP_ENABLED: true
+      GF_SMTP_HOST: stunnel:465
+      GF_SMTP_USER: alertmanager@optiop.org
+      GF_SMTP_PASSWORD: password
+      GF_SMTP_FROM_ADDRESS: alerts@optiop.org
+      GF_SMTP_SKIP_VERIFY: true
+    ports:
+      - 3000:3000
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - 8025:8025
+      - 1025:1025
+
+  stunnel:
+    image: dweomer/stunnel
+    environment:
+      - STUNNEL_SERVICE=smtps
+      - STUNNEL_ACCEPT=465
+      - STUNNEL_CONNECT=mailhog:1025
+    ports:
+      - 465:465

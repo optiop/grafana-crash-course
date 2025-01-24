@@ -40,45 +40,13 @@ alloy:
         forward_to = [prometheus.remote_write.cloud.receiver]
       }
 
-      prometheus.exporter.cadvisor "cadvisor" {
-      }
-
-      prometheus.scrape "cadvisor" {
-        job_name = "cadvisor"
-        targets  = prometheus.exporter.cadvisor.cadvisor.targets
-        scheme = "https"
-        forward_to = [prometheus.remote_write.cloud.receiver]
-      }
-
-      discovery.kubernetes "k8s_pods" {
-        role = "pod"
-        api_server = "https://kubernetes.default.svc.cluster.local"
-      }
-
-      prometheus.scrape "kube_api_server" {
-        job_name = "kube_api_server"
-        targets  = discovery.kubernetes.k8s_pods.targets
-        scheme   = "https"
-        forward_to = [prometheus.remote_write.cloud.receiver]
-      }
-
-      discovery.kubelet "kubelet" {
-      }
-
-      prometheus.scrape "kubelet" {
-        job_name = "kubelet"
-        targets  = discovery.kubelet.kubelet.targets
-        scheme   = "https"
-        forward_to = [prometheus.remote_write.cloud.receiver]
-      }
-
       prometheus.remote_write "cloud" {
         endpoint {
           name = "hosted-prometheus"
           url  = "https://prometheus-prod-24-prod-eu-west-2.grafana.net/api/prom/push"
           basic_auth {
-            username = ""
-            password = ""
+            username = "1987448"
+            password = "glc_eyJvIjoiMTMxNTIwNiIsIm4iOiJzdGFjay0xMTM1MTk5LWFsbG95LWFwaSIsImsiOiIyVUdXT2I1RTQ0MVM1NDVtY2U3UTdVYmwiLCJtIjp7InIiOiJwcm9kLWV1LXdlc3QtMiJ9fQ=="
           }
         }
       }

@@ -1,4 +1,4 @@
-services: 
+services:
   cadvisor:
     image: gcr.io/cadvisor/cadvisor
     privileged: true
@@ -11,7 +11,7 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
       - /dev/disk/:/dev/disk:ro
     devices:
-      - /dev/kmsg 
+      - /dev/kmsg
 
   prometheus:
     image: prom/prometheus:latest
@@ -26,7 +26,7 @@ services:
   grafana:
     image: grafana/grafana:11.4.0
     volumes:
-      - ./grafana/provisioning:/etc/grafana/provisioning 
+      - ./grafana/provisioning:/etc/grafana/provisioning
     environment:
       GF_LOG_LEVEL: critical
       GF_AUTH_ANONYMOUS_ENABLED: true

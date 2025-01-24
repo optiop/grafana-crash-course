@@ -1,4 +1,4 @@
-services: 
+services:
   alloy:
     # Grafana Alloy version 1.5.1
     # https://hub.docker.com/r/grafana/alloy/tags
@@ -33,7 +33,7 @@ services:
   grafana:
     image: grafana/grafana:11.4.0
     volumes:
-      - ./grafana/provisioning:/etc/grafana/provisioning 
+      - ./grafana/provisioning:/etc/grafana/provisioning
     environment:
       GF_LOG_LEVEL: critical
       GF_AUTH_ANONYMOUS_ENABLED: true

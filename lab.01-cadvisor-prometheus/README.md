@@ -17,7 +17,7 @@ Start cAdvisor, Prometheus and Grafana
 docker compose up -d
 ```
 
-Checkout the services 
+Checkout the services
 
 | Service | URL |
 | --- | --- |

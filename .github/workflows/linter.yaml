@@ -30,6 +30,5 @@
           env:
             # To report GitHub Actions status checks
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            MARKDOWN_CONFIG_FILE: .github/workflows/.lint-markdown.yaml
             VALIDATE_GIT_COMMITLINT: false
 

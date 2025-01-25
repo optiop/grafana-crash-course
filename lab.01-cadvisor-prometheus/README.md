@@ -9,6 +9,7 @@ In this lab, we will monitor the container status using cAdvisor and Prometheus.
 First thing first, let us start cAdvisor and explore the metrics.
 
 [//]: <> (lab-instruction)
+
 ```bash
 docker run -d -p 8081:8080 --privileged --rm \
   --name=lab.01-cadvisor \
@@ -20,7 +21,7 @@ docker run -d -p 8081:8080 --privileged --rm \
   gcr.io/cadvisor/cadvisor
 ```
 
-This command will start cAdvisor and expose the metrics on port 8081. You can access the metrics 
+This command will start cAdvisor and expose the metrics on port 8081. You can access the metrics
 at [http://localhost:8081/metrics](http://localhost:8081/metrics). Try to find out the metric
 `container_cpu_usage_seconds_total` in the metrics for the current container `lab.01-cadvisor`.
 
@@ -28,6 +29,7 @@ at [http://localhost:8081/metrics](http://localhost:8081/metrics). Try to find o
 <summary>✅ Test: cAdvisor is reachable via port 8081</summary>
 
 [//]: <> (lab-instruction)
+
 ```bash
 echo "[TEST] cAdvisor is reachable via port 8081"
 check_reachable_via_curl "http://localhost:8081/metrics" "container_cpu_usage_seconds_total"
@@ -39,6 +41,7 @@ check_reachable_via_curl "http://localhost:8081/metrics" "container_cpu_usage_se
 <summary>✅ Test: We can retrieve container information</summary>
 
 [//]: <> (lab-instruction)
+
 ```bash
 echo "[TEST] We can retrieve container information"
 check_reachable_via_curl "http://localhost:8081/metrics" "lab.01-cadvisor"
@@ -46,15 +49,15 @@ check_reachable_via_curl "http://localhost:8081/metrics" "lab.01-cadvisor"
 
 </details>
 
-
 ## Prometheus to scrape the metrics and store them
 
-Now that we have cAdvisor running, let us start Prometheus to scrape the metrics and store them in its 
+Now that we have cAdvisor running, let us start Prometheus to scrape the metrics and store them in its
 time-series database.
 
 We have to create a configuration file for Prometheus. Create a file `prometheus.yaml` with the following content:
 
 [//]: <> (lab-instruction)
+
 ```bash
 cat <<EOF > prometheus.yaml
 global:
@@ -70,6 +73,7 @@ EOF
 Start Prometheus with the configuration file `prometheus.yaml`.
 
 [//]: <> (lab-instruction)
+
 ```bash
 docker run -d -p 9091:9090 --rm --name lab.01-prometheus \
   --volume ./prometheus.yaml:/etc/prometheus/prometheus.yaml \
@@ -81,19 +85,19 @@ docker run -d -p 9091:9090 --rm --name lab.01-prometheus \
 <summary>✅ Test: Prometheus is reachable via port 9091</summary>
 
 [//]: <> (lab-instruction)
+
 ```bash
 check_reachable_via_curl "http://localhost:9091/metrics" "prometheus_build_info"
 ```
 
 </details>
 
-
-
 ## Grafana
 
 Run the following command to start Grafana
 
 [//]: <> (lab-instruction)
+
 ```bash
 docker run -d -p 3000:3000  --name lab.01-grafana grafana/grafana
 ```
@@ -102,6 +106,7 @@ docker run -d -p 3000:3000  --name lab.01-grafana grafana/grafana
 <summary>Test: Grafana is reachable via port 3000</summary>
 
 [//]: <> (lab-instruction)
+
 ```bash
 echo "[TEST] Grafana is reachable via port 3000"
 check_reachable_via_curl "http://localhost:3000/api/health" "version"
@@ -112,6 +117,7 @@ check_reachable_via_curl "http://localhost:3000/api/health" "version"
 ## Cleanup
 
 [//]: <> (lab-instruction)
+
 ```bash
 docker stop lab.01-cadvisor
 docker stop lab.01-grafana
@@ -122,6 +128,7 @@ rm prometheus.yaml
 Start cAdvisor, Prometheus and Grafana
 
 [//]: <> (lab-instruction)
+
 ```bash
 echo "Start cAdvisor, Prometheus and Grafana"
 docker compose up -d
@@ -129,6 +136,7 @@ echo "Wait for 10 seconds"
 ```
 
 [//]: <> (lab-instruction)
+
 ```bash
 docker compose down
 ```

@@ -11,6 +11,7 @@ for dir in $lab; do
 	if [ -d "$dir" ]; then
 		echo "#!/bin/bash" >"$dir/install.sh"
 		echo "source .scripts/test-utils.sh" >>"$dir/install.sh"
+		# shellcheck disable=SC2006,SC2086,SC2287
 		awk '/lab-instruction/ {found=1} found' "$dir/README.md" \
 			| sed -n "/```/,/```/p" | sed '/```/d' >> $dir/install.sh
 		echo "----------------------------------------------------------------------------------------------------"

@@ -10,7 +10,7 @@ check_reachable_via_curl() {
 	echo "  [INFO] Attempting to reach URL: $url and match regex: $regex"
 	for i in $(seq 1 $retry); do
 		curl -s "$url" | grep -q "$regex" &&
-			echo "  [PASSED] URL: $url is reachable and matches the regex: $regex" &&
+			echo "  [PASSED] URL: $url is reachable and matches the regex: $regex (Attempt: $i)" &&
 			return 0
 		sleep $delay
 	done

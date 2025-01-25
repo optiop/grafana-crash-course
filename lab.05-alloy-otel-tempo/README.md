@@ -1,1 +1,1 @@
-# Alloy OTel Tempo
+# Alloy OpenTelemetry

@@ -19,6 +19,10 @@ test-exercise:
 	@echo "Test instructions for each lab"
 	./.scripts/test-exercise.sh
 
+show-slides:
+	@echo "Show slides for each lab"
+	npm run dev lab.01-cadvisor-prometheus/slides.md 
+
 test:
 	@make test-structure
 	@make test-exercise

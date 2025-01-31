@@ -12,8 +12,8 @@ mdc: true
 # Metrics with cAdvisor and Prometheus
 
 ---
-transition: fade-out
----
+
+## transition: fade-out
 
 # Metrics with cAdvisor and Prometheus
 
@@ -37,7 +37,6 @@ docker run -d -p 8081:8080 --privileged --rm \
   --volume=/dev/disk/:/dev/disk:ro \
   gcr.io/cadvisor/cadvisor
 ```
-
 
 This command will start cAdvisor and expose the metrics on port 8081. You can access the metrics
 at [http://localhost:8081/metrics](http://localhost:8081/metrics). Try to find out the metric
@@ -68,8 +67,8 @@ check_reachable_via_curl "http://localhost:8081/metrics" "lab.01-cadvisor"
 </details>
 
 ---
-transition: fade-out
----
+
+## transition: fade-out
 
 ## Prometheus to scrape the metrics and store them
 

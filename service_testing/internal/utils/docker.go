@@ -2,7 +2,8 @@ package utils
 
 import (
 	"context"
-	"fmt"
+	"errors"
+	internalErr "service_testing/internal/errors"
 
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
@@ -11,12 +12,12 @@ import (
 func GetDockerContainerInfo(ctx context.Context, containerName string) error {
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
-		return fmt.Errorf("error creating Docker client: %w", err)
+		return errors.Join(internalErr.ErrDockerClientCreation, err)
 	}
 
 	containers, err := cli.ContainerList(ctx, container.ListOptions{All: true})
 	if err != nil {
-		return fmt.Errorf("error listing containers: %w", err)
+		return errors.Join(internalErr.ErrDockerGetAllContainer, err)
 	}
 
 	for _, container := range containers {
@@ -27,5 +28,5 @@ func GetDockerContainerInfo(ctx context.Context, containerName string) error {
 		}
 	}
 
-	return fmt.Errorf("container with name %s not found", containerName)
+	return internalErr.FailDockerContainerNotFound
 }

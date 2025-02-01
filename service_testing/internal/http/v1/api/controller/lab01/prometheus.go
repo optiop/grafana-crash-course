@@ -1,8 +1,10 @@
 package lab01
 
 import (
-	httpSchema "service_testing/internal/http/v1/api/schema/http"
+	"service_testing/internal/http/v1/api/schema"
 	"service_testing/internal/utils"
+
+	internalErr "service_testing/internal/errors"
 
 	"github.com/labstack/echo/v4"
 )
@@ -13,24 +15,22 @@ func PrometheusTestTargetExist(c echo.Context) error {
 
 	ctx := c.Request().Context()
 
-	activeTargetsName, err := utils.GetPrometheusActiveTargetsName(ctx, prometheusAddress)
+	_, err := utils.GetPrometheusActiveTargetWithName(ctx, prometheusAddress, prometheusTargetName)
 	if err != nil {
-		httpError := httpSchema.HttpMessage{
-			Message: err.Error(),
-		}
-
-		return c.JSON(500, httpError)
-	}
-
-	for _, targetName := range activeTargetsName {
-		if targetName == prometheusTargetName {
-			return c.JSON(200, httpSchema.HttpMessage{
-				Message: "Target founded!",
+		if errTypeName := internalErr.TypeErrorDetection(err); errTypeName != "" {
+			return c.JSON(200, schema.Message{
+				Message: err.Error(),
+				Status:  errTypeName,
 			})
 		}
+
+		return c.JSON(500, schema.Message{
+			Message: err.Error(),
+			Status:  "panic",
+		})
 	}
 
-	return c.JSON(200, httpSchema.HttpMessage{
-		Message: "Target not found!",
+	return c.JSON(200, schema.Message{
+		Message: "Target founded!",
 	})
 }

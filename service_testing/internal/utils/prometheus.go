@@ -2,30 +2,36 @@ package utils
 
 import (
 	"context"
-	"fmt"
+	"errors"
+	"strings"
 
 	"github.com/prometheus/client_golang/api"
 	v1Api "github.com/prometheus/client_golang/api/prometheus/v1"
+
+	internalErr "service_testing/internal/errors"
 )
 
-func GetPrometheusActiveTargetsName(ctx context.Context, prometheusURL string) ([]string, error) {
+func GetPrometheusActiveTargetWithName(ctx context.Context, prometheusURL, name string) (*v1Api.ActiveTarget, error) {
 	client, err := api.NewClient(api.Config{
 		Address: prometheusURL,
 	})
 	if err != nil {
-		return nil, fmt.Errorf("error creating Prometheus client: %w", err)
+		return nil, errors.Join(internalErr.ErrPrometheusCreateClient, err)
 	}
 
 	v1api := v1Api.NewAPI(client)
 	targets, err := v1api.Targets(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("error getting targets: %w", err)
+		return nil, errors.Join(internalErr.ErrPrometheusGetAllTargets, err)
 	}
 
-	var targetNames []string
 	for _, target := range targets.Active {
-		targetNames = append(targetNames, target.DiscoveredLabels["job"])
+		if jobName, ok := target.DiscoveredLabels["job"]; ok {
+			if strings.EqualFold(jobName, name) {
+				return &target, nil
+			}
+		}
 	}
 
-	return targetNames, nil
+	return nil, internalErr.FailPrometheusNotFoundTarget
 }

@@ -1,5 +1,7 @@
 ---
 theme: ../../resources/slide-theme
+colorSchema: dark
+author: Mehrshad Lotfi
 background: /background.png
 layout: cover
 title: cAdvisor and Prometheus
@@ -27,133 +29,218 @@ mdc: true
 ![cAdvisor Metrics](/cadvisor.prometheus.drawio.svg)
 
 --- 
-transition: slide-left
+transition: slide-up
 ---
 
 ## cAdvisor to expose container metrics
 
 ![cAdvisor demo](/cadvisor.demo.drawio.svg)
 
----
-layout: image-right
-image: https://cover.sli.dev
----
-
-# Code
-
-Use code snippets and get the highlighting directly, and even types hover!
-
-```ts {all|5|7|7-8|10|all} twoslash
-// TwoSlash enables TypeScript hover information
-// and errors in markdown code blocks
-// More at https://shiki.style/packages/twoslash
-
-import { computed, ref } from 'vue'
-
-const count = ref(0)
-const doubled = computed(() => count.value * 2)
-
-doubled.value = 2
-```
-
-<arrow v-click="[4, 5]" x1="350" y1="310" x2="195" y2="334" color="#953" width="2" arrowSize="1" />
-
-<!-- This allow you to embed external code blocks -->
-<<< @/snippets/external.ts#snippet
-
-<!-- Footer -->
-
-[Learn more](https://sli.dev/features/line-highlighting)
-
-<!-- Inline style -->
-<style>
-.footnotes-sep {
-  @apply mt-5 opacity-10;
-}
-.footnotes {
-  @apply text-sm opacity-75;
-}
-.footnote-backref {
-  display: none;
-}
-</style>
-
-<!--
-Notes can also sync with clicks
-
-[click] This will be highlighted after the first click
-
-[click] Highlighted with `count = ref(0)`
-
-[click:3] Last click (skip two clicks)
--->
 
 
 ---
 level: 2
-layout: section
+transition: slide-up
 ---
 
-````md magic-move
-```ts {*|2|*}
-// step 1
-const author = reactive({
-  name: 'John Doe',
-  books: [
-    'Vue 2 - Advanced Guide',
-    'Vue 3 - Basic Guide',
-    'Vue 4 - The Mystery'
-  ]
-})
+# Expose Container Metrics cAdvisor
+
+<br />
+
+````md magic-move {lines: true}
+```bash
+docker run -d -p 8080:8080 \
+  gcr.io/cadvisor/cadvisor
 ```
 
-```ts {*|1-2|3-4|3-4,8}
-// step 2
-export default {
-  data() {
-    return {
-      author: {
-        name: 'John Doe',
-        books: [
-          'Vue 2 - Advanced Guide',
-          'Vue 3 - Basic Guide',
-          'Vue 4 - The Mystery'
-        ]
-      }
-    }
-  }
-}
+```bash
+docker run -d -p 8080:8080 --rm \
+  --name=lab.01-cadvisor \
+  gcr.io/cadvisor/cadvisor
 ```
 
-```ts
-// step 3
-export default {
-  data: () => ({
-    author: {
-      name: 'John Doe',
-      books: [
-        'Vue 2 - Advanced Guide',
-        'Vue 3 - Basic Guide',
-        'Vue 4 - The Mystery'
-      ]
-    }
-  })
-}
-```
-
-Non-code blocks are ignored.
-
-```vue
-<!-- step 4 -->
-<script setup>
-const author = {
-  name: 'John Doe',
-  books: [
-    'Vue 2 - Advanced Guide',
-    'Vue 3 - Basic Guide',
-    'Vue 4 - The Mystery'
-  ]
-}
-</script>
+```bash {3-7|*}
+docker run -d -p 8080:8080 --privileged --rm \
+  --name=lab.01-cadvisor \
+  --volume=/:/rootfs:ro \
+  --volume=/var/run/docker.sock:/var/run/docker.sock:rw \
+  --volume=/sys:/sys:ro \
+  --volume=/var/lib/docker/:/var/lib/docker:ro \
+  --volume=/dev/disk/:/dev/disk:ro \
+  gcr.io/cadvisor/cadvisor
 ```
 ````
+<div class="abs-b m-6">
+<div class="columns-5">
+  <LabCheck />
+  <LabCheck />
+  <LabCheck />
+</div>
+</div>
+
+---
+transition: slide-left
+---
+
+## Explore cAdvisor Metrics
+
+<br />
+
+
+<iframe src="http://localhost:8080/" class="w-full h-4/5" />
+
+[`http://localhost:8080/`](http://localhost:8080/)
+
+<div class="abs-tr m-6">
+  <FullscreenButton />
+</div>
+
+--- 
+transition: slide-up
+---
+
+## Prometheus to scrape cAdvisor Metrics
+
+![Prometheus demo](/prometheus.demo.drawio.svg)
+
+---
+level: 2
+transition: slide-up
+---
+
+# Prometheus Configuration for cAdvisor Metrics
+
+<br />
+
+```bash
+cat <<EOF > prometheus.yaml
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['lab.01-cadvisor:8080']
+EOF
+```
+
+---
+transition: slide-up
+---
+
+# Start Prometheus using Docker
+
+<br />
+
+````md magic-move {lines: true}
+```bash
+docker run -d -p 9090:9090 \
+  prom/prometheus:latest
+```
+
+```bash
+docker run -d -p 9090:9090 --rm --name lab.01-prometheus \
+  prom/prometheus:latest
+```
+
+```bash
+docker run -d -p 9090:9090 --rm --name lab.01-prometheus \
+  --volume ./prometheus.yaml:/etc/prometheus/prometheus.yaml \
+  prom/prometheus:latest
+```
+
+```bash
+docker run -d -p 9090:9090 --rm --name lab.01-prometheus \
+  --volume ./prometheus.yaml:/etc/prometheus/prometheus.yaml \
+  prom/prometheus:latest \
+  --config.file=/etc/prometheus/prometheus.yaml
+```
+````
+<div class="abs-b m-6">
+<div class="columns-5">
+  <LabCheck />
+  <LabCheck />
+  <LabCheck />
+</div>
+</div>
+
+---
+transition: slide-left
+---
+
+## Explore cAdvisor Metrics
+
+<br />
+
+
+<iframe src="http://localhost:9090/" class="w-full h-4/5" />
+
+[`http://localhost:9090/`](http://localhost:8080/)
+
+<div class="abs-tr m-6">
+  <FullscreenButton />
+</div>
+
+--- 
+transition: slide-up
+---
+
+## Prometheus to scrape cAdvisor Metrics
+
+![Prometheus demo](/grafana.demo.drawio.svg)
+
+--- 
+transition: slide-up
+---
+
+## Run Grafana using Docker
+
+<br /> 
+
+```bash
+docker run -d -p 3000:3000 \
+  --name lab.01-grafana grafana/grafana
+```
+
+<div class="abs-b m-6">
+<div class="columns-5">
+  <LabCheck />
+  <LabCheck />
+  <LabCheck />
+</div>
+</div>
+
+
+
+--- 
+transition: slide-left
+---
+
+## Explore Grafana
+
+<br />
+
+
+<iframe src="http://localhost:3000/" class="w-full h-4/5" />
+
+[`http://localhost:3000/`](http://localhost:3000/)
+
+<div class="abs-tr m-6">
+  <FullscreenButton />
+</div>
+
+
+---
+layout: center
+class: text-center
+---
+
+# Follow Us
+
+<mdi-youtube class="color-red"/> [Youtube](https://www.youtube.com/@Optiop-Group) · 
+<mdi-github class="color-white" /> [GitHub](https://github.com/optiop/) · 
+<mdi-linkedin class="color-white" /> [Contact](https://linkedin.com/company/optiop-group)
+
+<div class="abs-br m-10">
+  <h2 class="text-2xl">Optiop <span class="color-blue">.</span></h2>
+</div>

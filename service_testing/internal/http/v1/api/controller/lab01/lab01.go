@@ -8,7 +8,7 @@ import (
 
 func ServiceLab01(c echo.Context) error {
 	message := schema.Message{
-		Message: "Lav 01 Service Is Healthy",
+		Message: "Lab 01 Service Is Healthy",
 	}
 
 	return c.JSON(200, message)
@@ -16,7 +16,7 @@ func ServiceLab01(c echo.Context) error {
 
 func Healthy(c echo.Context) error {
 	message := schema.Message{
-		Message: "Lav 01 Service Is Healthy",
+		Message: "Lab 01 Service Is Healthy",
 	}
 
 	return c.JSON(200, message)

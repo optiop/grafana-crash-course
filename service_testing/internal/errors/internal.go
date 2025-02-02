@@ -77,7 +77,7 @@ var (
 		Message: "fail to find prometheus target",
 	}
 
-	// loki fail errors
+	// loki fail errors test
 	FailLokiConfigurationNotFound = &FailError{
 		Code:    "FailLokiConfigurationNotFound",
 		Message: "fail to get loki Configuration",

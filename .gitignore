@@ -1,2 +1,3 @@
+.selected_target
 node_modules/
 .vscode

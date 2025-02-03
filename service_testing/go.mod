@@ -6,6 +6,7 @@ require (
 	github.com/docker/docker v27.5.1+incompatible
 	github.com/labstack/echo/v4 v4.13.3
 	github.com/prometheus/client_golang v1.20.5
+	github.com/rs/zerolog v1.33.0
 )
 
 require (

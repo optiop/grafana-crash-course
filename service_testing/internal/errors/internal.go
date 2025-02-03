@@ -111,3 +111,7 @@ func TypeErrorDetection(err error) string {
 
 	return ""
 }
+
+func MessageBuilder(err error) (msg, status string) {
+	return
+}

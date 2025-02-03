@@ -18,7 +18,10 @@
   },
   "dependencies": {
     "@iconify-json/mdi": "^1.2.3",
-    "@slidev/types": "^51.1.0"
+    "@shikijs/engine-javascript": "^2.2.0",
+    "@shikijs/monaco": "^2.2.0",
+    "@slidev/types": "^51.1.0",
+    "axios": "^1.7.9"
   },
   "devDependencies": {
     "@slidev/cli": "^51.1.0"

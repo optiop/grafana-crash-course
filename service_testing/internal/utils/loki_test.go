@@ -7,9 +7,9 @@ import (
 
 func TestGetLokiConfig(t *testing.T) {
 	ctx := context.TODO()
-	addr := "http://localhost:3000"
+	addr := "http://localhost:9080"
 
-	_, err := GetLokiDatasource(ctx, addr)
+	_, err := GetPromtailConfiguration(ctx, addr)
 	if err != nil {
 		t.Fatal(err)
 	}

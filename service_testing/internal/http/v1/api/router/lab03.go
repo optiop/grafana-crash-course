@@ -11,4 +11,5 @@ func setupRouterLab03(g *echo.Group) {
 
 	rg.GET("/test_loki_configuration_not_found", lab03.LokiConfigurationNotFound)
 	rg.GET("/test_loki_datasource_not_found", lab03.LokiDatasourceNotFound)
+	rg.GET("/test_promtail_configuration_not_found", lab03.PromtailConfigurationNotFound)
 }

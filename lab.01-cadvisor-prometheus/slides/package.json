@@ -11,7 +11,7 @@
   },
   "scripts": {
     "build": "slidev build example.md",
-    "dev": "slidev slides.md --open",
+    "dev": "slidev slides.md",
     "example": "slidev example.md --open",
     "export": "slidev export example.md",
     "screenshot": "slidev export example.md --format png"

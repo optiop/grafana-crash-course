@@ -198,7 +198,7 @@ transition: slide-up
 <br /> 
 
 ```bash
-docker run -d -p 3000:3000 \
+docker run -d -p 3000:3000 --rm \
   --name lab.01-grafana grafana/grafana
 ```
 
@@ -239,7 +239,7 @@ class: text-center
 
 <mdi-youtube class="color-red"/> [Youtube](https://www.youtube.com/@Optiop-Group) · 
 <mdi-github class="color-white" /> [GitHub](https://github.com/optiop/) · 
-<mdi-linkedin class="color-white" /> [Contact](https://linkedin.com/company/optiop-group)
+<mdi-linkedin class="color-white" /> [Linkedin](https://linkedin.com/company/optiop-group)
 
 <div class="abs-br m-10">
   <h2 class="text-2xl">Optiop <span class="color-blue">.</span></h2>

@@ -11,12 +11,6 @@
   @apply font-mono font-bold text-[var(--optiop-primary)] text-4xl;
 } */
 
-.slidev-layout.test {
-  h1 {
-    @apply text-4xl leading-20 font-mono font-bold text-[var(--optiop-primary)];
-  }
-}
-
 .slidev-layout.main {
   h1 {
     @apply text-4xl leading-20 font-mono font-bold text-[var(--optiop-primary)];
@@ -34,7 +28,7 @@
   @apply h-full grid bg-[var(--optiop-bg)] text-white;
 
   h1 {
-    @apply text-6xl leading-20 font-mono text-[var(--optiop-primary)];
+    @apply text-5xl font-medium leading-20 font-mono text-[var(--optiop-primary)];
   }
 
   h2,

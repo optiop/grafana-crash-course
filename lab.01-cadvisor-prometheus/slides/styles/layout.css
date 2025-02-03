@@ -1,0 +1,50 @@
+:root {
+  /* default theme color */
+  /* can be overrided by uses `themeConfig` option */
+  --slidev-theme-primary: #3b82f6;
+  --optiop-bg: #141414;
+  --optiop-primary: #3b82f6;
+  --optiop-secondary: #dddddd;
+}
+
+/* h1 {
+  @apply font-mono font-bold text-[var(--optiop-primary)] text-4xl;
+} */
+
+.slidev-layout.main {
+  h1 {
+    @apply text-4xl leading-20 font-mono font-bold text-[var(--optiop-primary)];
+  }
+}
+
+.slidev-code-wrapper {
+  span {
+    @apply text-lg;
+  }
+}
+
+.slidev-layout.cover,
+.slidev-layout.intro .slidev-layout {
+  @apply h-full grid bg-[var(--optiop-bg)] text-white;
+
+  h1 {
+    @apply text-5xl font-medium leading-20 font-mono text-[var(--optiop-primary)];
+  }
+
+  h2,
+  h3,
+  h4,
+  h5 {
+    @apply font-mono text-[var(--optiop-secondary)];
+  }
+
+  h1 + p {
+    @apply -mt-2 opacity-50 mb-4;
+  }
+
+  p,
+  ul,
+  table {
+    @apply mt-10 font-sans;
+  }
+}

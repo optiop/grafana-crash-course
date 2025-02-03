@@ -8,11 +8,11 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func LokiDatasourceNotFound(c echo.Context) error {
+func LokiLogsNotFound(c echo.Context) error {
 	ctx := c.Request().Context()
-	addr := "http://localhost:3000"
+	addr := "http://localhost:3100"
 
-	_, err := utils.GetLokiDatasource(ctx, addr)
+	_, err := utils.GetLokiLogsExist(ctx, addr)
 
 	if err != nil {
 		if errTypeName := internalErr.TypeErrorDetection(err); errTypeName != "" {
@@ -29,7 +29,7 @@ func LokiDatasourceNotFound(c echo.Context) error {
 	}
 
 	return c.JSON(200, schema.Message{
-		Message: "Loki Datasource Found",
+		Message: "Loki Logs Found",
 		Status:  "success",
 	})
 }

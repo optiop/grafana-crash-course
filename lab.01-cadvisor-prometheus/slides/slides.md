@@ -73,9 +73,7 @@ docker run -d -p 8080:8080 --privileged --rm \
 ````
 <div class="abs-b m-6">
   <div class="columns-5">
-    <LabCheck testURL="http://localhost:3030" />
-    <LabCheck />
-    <LabCheck />
+    <LabCheck testURL="http://localhost:1234/api/v1/lab01/test_cadvisor_docker_up" />
   </div>
 </div>
 
@@ -173,9 +171,7 @@ docker run -d -p 9090:9090 --rm --name lab.01-prometheus \
 ````
 <div class="abs-b m-6">
 <div class="columns-5">
-  <LabCheck />
-  <LabCheck />
-  <LabCheck />
+  <LabCheck testURL="http://localhost:1234/api/v1/lab01/test_prometheus_target_exist" />
 </div>
 </div>
 
@@ -219,9 +215,7 @@ docker run -d -p 3000:3000 --rm \
 
 <div class="abs-b m-6">
 <div class="columns-5">
-  <LabCheck />
-  <LabCheck />
-  <LabCheck />
+  <LabCheck  testURL="http://localhost:1234/api/v1/lab01/test_grafana_reachable" />
 </div>
 </div>
 

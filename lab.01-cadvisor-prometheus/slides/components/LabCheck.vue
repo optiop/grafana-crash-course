@@ -4,7 +4,7 @@ import { ref } from 'vue'
 
 const props = defineProps({
   testURL: {
-    default: 'http://localhost:1234/api/v1/lab01/test_cadvisor_docker_up',
+    default: '',
   },
 })
 
@@ -13,22 +13,19 @@ var buttonText = ref('Click me')
 
 const fetchData = async () => {
   status.value = 'loading'
+
   try {
-    const successMsg = document.getElementById('successMsg')
-    if (successMsg) {
-      successMsg.classList.remove('hidden')
-      successMsg.innerHTML = '<h2>Testing</h2>'
-    }
-    const response = await axios.get(props.testURL)
-    console.log(response.data)
+    const res = await axios.get(props.testURL)
     buttonText = 'Loading'
-    setTimeout(() => {
-      buttonText = 'Test Passed'
-      status = 'success'
-    }, 2000)
+
+    buttonText = res.data.message
+    status = res.data.status
+
   } catch (error) {
     console.error(error)
     status.value = 'idle'
+    buttonText = error.response.data.message
+    status = error.response.data.status
   }
 }
 

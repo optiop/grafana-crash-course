@@ -11,7 +11,6 @@ import (
 func LokiLogsNotFound(c echo.Context) error {
 	ctx := c.Request().Context()
 	addr := "http://localhost:3100"
-
 	_, err := utils.GetLokiLogsExist(ctx, addr)
 
 	if err != nil {

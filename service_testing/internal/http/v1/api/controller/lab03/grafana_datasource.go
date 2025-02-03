@@ -11,7 +11,6 @@ import (
 func GrafanaLokiDatasourceNotFound(c echo.Context) error {
 	ctx := c.Request().Context()
 	addr := "http://localhost:3000"
-
 	_, err := utils.GetGrafanaLokiDatasource(ctx, addr)
 
 	if err != nil {

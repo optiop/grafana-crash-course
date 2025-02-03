@@ -7,10 +7,6 @@
   --optiop-secondary: #dddddd;
 }
 
-/* h1 {
-  @apply font-mono font-bold text-[var(--optiop-primary)] text-4xl;
-} */
-
 .slidev-layout.main {
   h1 {
     @apply text-4xl leading-20 font-mono font-bold text-[var(--optiop-primary)];

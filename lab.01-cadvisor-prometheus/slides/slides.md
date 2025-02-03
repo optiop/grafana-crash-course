@@ -9,6 +9,7 @@ info: In this lab, we will monitor the container status using cAdvisor and
   Prometheus. The lab is based on `docker`.
 class: text-center
 transition: slide-left
+favicon: /favicon.png
 mdc: true
 ---
 
@@ -71,11 +72,25 @@ docker run -d -p 8080:8080 --privileged --rm \
 ```
 ````
 <div class="abs-b m-6">
-<div class="columns-5">
-  <LabCheck />
-  <LabCheck />
-  <LabCheck />
+  <div class="columns-5">
+    <LabCheck testURL="http://localhost:3030" />
+    <LabCheck />
+    <LabCheck />
+  </div>
 </div>
+
+<div class="abs-br m-6">
+  <div id="successMsg" class="w-96 bg-green color-black p-4 rounded-lg hidden">
+    <h2>
+      cAdvisor
+    </h2>
+  </div>
+  <div class="w-96 bg-red color-black p-4 rounded-lg hidden">
+    <h2>
+      cAdvisor
+    </h2>
+  </div>
+
 </div>
 
 ---
@@ -229,6 +244,15 @@ transition: slide-left
   <FullscreenButton />
 </div>
 
+--- 
+transition: slide-left
+---
+
+## Next in Grafana Alloy Crash Course
+
+<br />
+
+![Alloy cAdvisor Prometheus](/alloy.cadvisor.prometheus.drawio.svg)
 
 ---
 layout: center

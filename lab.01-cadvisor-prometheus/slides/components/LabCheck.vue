@@ -9,23 +9,33 @@ const props = defineProps({
 })
 
 var status = ref('idle')
-var buttonText = ref('Click me')
+var buttonText = ref('Check')
 
 const fetchData = async () => {
   status.value = 'loading'
 
   try {
     const res = await axios.get(props.testURL)
-    buttonText = 'Loading'
+    buttonText.value = 'Loading'
 
-    buttonText = res.data.message
-    status = res.data.status
+    setTimeout(() => {
+      buttonText.value = 'Test Passed'
+      status.value = 'success'
+      const successMsg = document.getElementById('successMsg')
+      if (successMsg) {
+        successMsg.classList.remove('hidden')
+        const successMsgParagraph = successMsg.querySelector('p')
+        if (successMsgParagraph) {
+          successMsgParagraph.innerHTML = res.data.message
+        }
+      }
+    }, 1000)
 
   } catch (error) {
     console.error(error)
     status.value = 'idle'
-    buttonText = error.response.data.message
-    status = error.response.data.status
+    buttonText.value = "Test Failed"
+    status.value = 'idle'
   }
 }
 

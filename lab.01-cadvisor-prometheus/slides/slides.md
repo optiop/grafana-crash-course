@@ -40,8 +40,8 @@ transition: slide-up
 
 
 ---
-level: 2
 transition: slide-up
+layout: main
 ---
 
 # Expose Container Metrics cAdvisor
@@ -77,19 +77,7 @@ docker run -d -p 8080:8080 --privileged --rm \
   </div>
 </div>
 
-<div class="abs-br m-6">
-  <div id="successMsg" class="w-96 bg-green color-black p-4 rounded-lg hidden">
-    <h2>
-      cAdvisor
-    </h2>
-  </div>
-  <div class="w-96 bg-red color-black p-4 rounded-lg hidden">
-    <h2>
-      cAdvisor
-    </h2>
-  </div>
 
-</div>
 
 ---
 transition: slide-left
@@ -139,6 +127,7 @@ EOF
 
 ---
 transition: slide-up
+layout: main
 ---
 
 # Start Prometheus using Docker

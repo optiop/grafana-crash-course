@@ -1,5 +1,5 @@
 {
-  "name": "lab.01-cadvisor-prometheus",
+  "name": "slidev-theme-optiop-theme",
   "version": "0.0.0",
   "type": "module",
   "keywords": [
@@ -20,9 +20,9 @@
     "@iconify-json/mdi": "^1.2.3",
     "@shikijs/engine-javascript": "^2.2.0",
     "@shikijs/monaco": "^2.2.0",
+    "@slidev/theme-seriph": "^0.25.0",
     "@slidev/types": "^51.1.0",
-    "axios": "^1.7.9",
-    "slidev-theme-optiop-theme": "^0.0.1"
+    "axios": "^1.7.9"
   },
   "devDependencies": {
     "@slidev/cli": "^51.1.0"

@@ -1,3 +1,40 @@
+<script setup lang="ts">
+import axios from 'axios'
+import { ref } from 'vue'
+
+const props = defineProps({
+  testURL: {
+    default: 'http://localhost:1234/api/v1/lab01/test_cadvisor_docker_up',
+  },
+})
+
+var status = ref('idle')
+var buttonText = ref('Click me')
+
+const fetchData = async () => {
+  status.value = 'loading'
+  try {
+    const successMsg = document.getElementById('successMsg')
+    if (successMsg) {
+      successMsg.classList.remove('hidden')
+      successMsg.innerHTML = '<h2>Testing</h2>'
+    }
+    const response = await axios.get(props.testURL)
+    console.log(response.data)
+    buttonText = 'Loading'
+    setTimeout(() => {
+      buttonText = 'Test Passed'
+      status = 'success'
+    }, 2000)
+  } catch (error) {
+    console.error(error)
+    status.value = 'idle'
+  }
+}
+
+
+</script>
+
 <template>
   <button
     @click="fetchData"
@@ -63,38 +100,3 @@
     {{ buttonText }}
   </button>
 </template>
-
-<script>
-import axios from "axios";
-
-export default {
-  data() {
-    return {
-      buttonText: "Check",
-      status: "idle",
-      error: null,
-    };
-  },
-  methods: {
-    fetchData() {
-      axios
-        .get("http://localhost:3030")
-        .then((response) => {
-          console.log(response.data);
-          this.buttonText = "Checking...";
-          this.status = "loading";
-          setTimeout(() => {
-            this.buttonText = "Test Passed";
-            this.status = "success";
-          }, 2000);
-        })
-        .catch((error) => {
-          console.error(error);
-          this.error = error;
-          this.buttonText = "Error";
-          this.status = "error";
-        });
-    },
-  },
-};
-</script>

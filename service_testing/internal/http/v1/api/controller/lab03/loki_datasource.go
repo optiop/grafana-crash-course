@@ -8,11 +8,11 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func LokiConfigurationNotFound(c echo.Context) error {
+func LokiDatasourceNotFound(c echo.Context) error {
 	ctx := c.Request().Context()
-	addr := "http://localhost:3100"
+	addr := "http://localhost:3000"
 
-	_, err := utils.GetLokiConfiguration(ctx, addr)
+	_, err := utils.GetLokiDatasource(ctx, addr)
 
 	if err != nil {
 		if errTypeName := internalErr.TypeErrorDetection(err); errTypeName != "" {
@@ -29,7 +29,7 @@ func LokiConfigurationNotFound(c echo.Context) error {
 	}
 
 	return c.JSON(200, schema.Message{
-		Message: "Loki Configuration Found",
+		Message: "Loki Datasource Found",
 		Status:  "success",
 	})
 }

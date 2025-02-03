@@ -1,3 +1,4 @@
+slide-theme/dist
 .selected_target
 node_modules/
 package-lock.json

@@ -1,5 +1,5 @@
 ---
-theme: ../../resources/slide-theme
+theme: slidev-theme-optiop-theme
 colorSchema: dark
 author: Mehrshad Lotfi
 background: /background.png
@@ -19,7 +19,7 @@ mdc: true
 
 <br /> 
 
-### Mehrshad Lotfi - DevOps Engineer @ Optiop.
+### Mehrshad Lotfi - DevOps Engineer @ Optiop<span class="color-blue">.</span>
 
 ---
 

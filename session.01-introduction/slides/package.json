@@ -1,0 +1,41 @@
+{
+  "name": "lab.01-cadvisor-prometheus",
+  "version": "0.0.0",
+  "type": "module",
+  "keywords": [
+    "slidev-theme",
+    "slidev"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "slidev build example.md",
+    "dev": "slidev slides.md",
+    "example": "slidev example.md --open",
+    "export": "slidev export example.md",
+    "screenshot": "slidev export example.md --format png"
+  },
+  "dependencies": {
+    "@iconify-json/mdi": "^1.2.3",
+    "@shikijs/engine-javascript": "^2.2.0",
+    "@shikijs/monaco": "^2.2.0",
+    "@slidev/types": "^51.1.0",
+    "axios": "^1.7.9",
+    "slidev-theme-optiop-theme": "^0.0.1"
+  },
+  "devDependencies": {
+    "@slidev/cli": "^51.1.0"
+  },
+  "//": "Learn more: https://sli.dev/guide/write-theme.html",
+  "slidev": {
+    "colorSchema": "both",
+    "defaults": {
+      "fonts": {
+        "heading": "Space Grotesk",
+        "sans": "IBM Plex Sans",
+        "mono": "Space Grotesk"
+      }
+    }
+  }
+}

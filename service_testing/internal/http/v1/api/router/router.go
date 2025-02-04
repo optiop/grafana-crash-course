@@ -6,4 +6,5 @@ func SetupRouter(e *echo.Echo) {
 	g := e.Group("/api/v1")
 
 	setupRouterLab01(g)
+	setupRouterLab03(g)
 }

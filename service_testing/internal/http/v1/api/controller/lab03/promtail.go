@@ -1,4 +1,4 @@
-package lab01
+package lab03
 
 import (
 	internalErr "service_testing/internal/errors"
@@ -8,11 +8,12 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func GrafanaIsReachable(c echo.Context) error {
+func PromtailConfigurationNotFound(c echo.Context) error {
 	ctx := c.Request().Context()
-	addr := "http://localhost:3000/api/health"
+	addr := "http://localhost:9080"
 
-	_, err := utils.RequestGetAddr(ctx, addr, 200)
+	_, err := utils.GetPromtailConfiguration(ctx, addr)
+
 	if err != nil {
 		if errTypeName := internalErr.TypeErrorDetection(err); errTypeName != "" {
 			return c.JSON(200, schema.Message{
@@ -28,7 +29,7 @@ func GrafanaIsReachable(c echo.Context) error {
 	}
 
 	return c.JSON(200, schema.Message{
-		Message: "Grafana Is Reachable",
+		Message: "Promtail Configuration Found",
 		Status:  "success",
 	})
 }

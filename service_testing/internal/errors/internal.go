@@ -76,6 +76,22 @@ var (
 		Code:    "FailPrometheusNotFoundTarget",
 		Message: "fail to find prometheus target",
 	}
+
+	// loki fail errors test
+	FailLokiConfigurationNotFound = &FailError{
+		Code:    "FailLokiConfigurationNotFound",
+		Message: "fail to get loki Configuration",
+	}
+
+	FailLokiDatasourceNotFound = &FailError{
+		Code:    "FailLokiDatasourceNotFound",
+		Message: "fail to find loki datasource",
+	}
+
+	FailLokiLogsNotFound = &FailError{
+		Code:    "LokiLogsNotFound",
+		Message: "fail to find loki log entries",
+	}
 )
 
 func (fe *FailError) Error() string {

@@ -3,10 +3,6 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PBFA97CFB590B2093"
-        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -1000,7 +996,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1067,7 +1063,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${datasource}"
           },
           "expr": "cadvisor_version_info{instance=~\"$node\"}",
           "intervalFactor": 2,
@@ -1078,7 +1074,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${datasource}"
           },
           "expr": "prometheus_build_info{}",
           "intervalFactor": 2,
@@ -1089,7 +1085,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${datasource}"
           },
           "expr": "node_exporter_build_info{instance=~\"$node\"}",
           "intervalFactor": 2,
@@ -1100,7 +1096,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${datasource}"
           },
           "expr": "cadvisor_version_info{instance=~\"$node\"}",
           "hide": false,
@@ -1112,7 +1108,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${datasource}"
           },
           "expr": "cadvisor_version_info{instance=~\"$node\"}",
           "intervalFactor": 2,
@@ -1123,7 +1119,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${datasource}"
           },
           "expr": "cadvisor_version_info{instance=~\"$node\"}",
           "intervalFactor": 2,
@@ -1145,7 +1141,7 @@
       {
         "current": {
           "text": "Prometheus",
-          "value": "PBFA97CFB590B2093"
+          "value": "${datasource}"
         },
         "label": "datasource",
         "name": "datasource",
@@ -1160,7 +1156,7 @@
           "text": ["All"],
           "value": ["$__all"]
         },
-        "datasource": "PBFA97CFB590B2093",
+        "datasource": "${datasource}",
         "definition": "label_values(container_cpu_user_seconds_total{job=~\"$job\"}, instance)",
         "includeAll": true,
         "label": "Instance",
@@ -1178,7 +1174,7 @@
           "text": "cadvisor",
           "value": "cadvisor"
         },
-        "datasource": "PBFA97CFB590B2093",
+        "datasource": "${datasource}",
         "definition": "label_values(container_cpu_user_seconds_total, job)",
         "includeAll": false,
         "label": "Job",
@@ -1196,7 +1192,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "PBFA97CFB590B2093",
+        "datasource": "${datasource}",
         "definition": "label_values(container_cpu_user_seconds_total{instance=~\"10.115.220.32:8080|10.115.220.33:8080\", name!=\"cadvisor\"}, name)",
         "hide": 2,
         "includeAll": true,
@@ -1216,7 +1212,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "PBFA97CFB590B2093",
+        "datasource": "${datasource}",
         "definition": "label_values(container_cpu_user_seconds_total{instance=~\"10.115.222.21:8080|10.115.222.22:8080\", name!=\"cadvisor\"}, name)",
         "hide": 2,
         "includeAll": true,

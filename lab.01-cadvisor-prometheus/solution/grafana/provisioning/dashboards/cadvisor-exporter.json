@@ -716,7 +716,7 @@
       {
         "current": {
           "text": "Prometheus",
-          "value": "PBFA97CFB590B2093"
+          "value": "${datasource}"
         },
         "label": "datasource",
         "name": "datasource",
@@ -732,7 +732,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "PBFA97CFB590B2093",
+        "datasource": "${datasource}",
         "definition": "label_values({__name__=~\"container.*\"},instance)",
         "includeAll": true,
         "label": "Host",
@@ -753,7 +753,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "PBFA97CFB590B2093",
+        "datasource": "${datasource}",
         "definition": "label_values({__name__=~\"container.*\", instance=~\"$host\"},name)",
         "includeAll": true,
         "label": "Container",
@@ -775,7 +775,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Cadvisor exporter",
+  "title": "cAdvisor Exporter",
   "uid": "optiop-cadvisor-exporter-v1",
   "version": 2,
   "weekStart": ""

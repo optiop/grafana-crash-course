@@ -1,0 +1,28 @@
+{
+    "dashboard": {
+        "id": null,
+        "title": "Sample Dashboard",
+        "panels": [
+            {
+                "type": "graph",
+                "title": "Test Data",
+                "targets": [
+                    {
+                        "refId": "A",
+                        "datasource": "TestData DB",
+                        "scenarioId": "random_walk"
+                    }
+                ],
+                "gridPos": {
+                    "h": 8,
+                    "w": 12,
+                    "x": 0,
+                    "y": 0
+                }
+            }
+        ],
+        "schemaVersion": 16,
+        "version": 0
+    },
+    "overwrite": true
+}

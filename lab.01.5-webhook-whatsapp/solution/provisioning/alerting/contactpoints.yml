@@ -1,0 +1,12 @@
+apiVersion: 1
+
+contactPoints:
+  - orgId: 1
+    name: "Webhook Contact"
+    receivers:
+      - uid: "webhook_contact"
+        type: "webhook"
+        settings:
+          url: "http://whatsapp_service:8080/whatsapp/send/grafana-alert/${WHATSAPP_APP_TOKEN}"
+          httpMethod: "POST"
+          disableTlsVerify: false

@@ -1,0 +1,105 @@
+---
+services:
+  prometheus-0-eu1:
+    image: prom/prometheus:v3.2.1
+    container_name: prometheus-0-eu1
+    volumes:
+      - ./prometheus/prometheus0_eu1.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus0_eu1_data:/prometheus
+    user: root
+    ports:
+      - 9090:9090
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.listen-address=:9090
+      - --web.external-url=http://localhost:9090
+      - --web.enable-lifecycle
+      - --web.enable-admin-api
+    
+
+  prometheus-0-us1:
+    image: prom/prometheus:v3.2.1
+    container_name: prometheus-0-us1
+    volumes:
+      - ./prometheus/prometheus0_us1.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus0_us1_data:/prometheus
+    user: root
+    ports:
+      - 9091:9091
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.listen-address=:9091
+      - --web.external-url=http://localhost:9091
+      - --web.enable-lifecycle
+      - --web.enable-admin-api
+
+  prometheus-1-us1:
+    image: prom/prometheus:v3.2.1
+    container_name: prometheus-1-us1
+    volumes:
+      - ./prometheus/prometheus1_us1.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus1_us1_data:/prometheus
+    user: root
+    ports:
+      - 9092:9092
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.listen-address=:9092
+      - --web.external-url=http://localhost:9092
+      - --web.enable-lifecycle
+      - --web.enable-admin-api
+
+  prometheus-0-sidecar-eu1:
+    image: thanosio/thanos:v0.37.2
+    container_name: prometheus-0-sidecar-eu1
+    volumes:
+      - ./prometheus/prometheus0_eu1.yml:/etc/prometheus/prometheus.yml
+    user: root
+    command:
+      - sidecar
+      - --http-address=0.0.0.0:19090
+      - --grpc-address=0.0.0.0:19190
+      - --reloader.config-file=/etc/prometheus/prometheus.yml
+      - --prometheus.url=http://prometheus-0-eu1:9090
+
+  prometheus-0-sidecar-us1:
+    image: thanosio/thanos:v0.37.2
+    container_name: prometheus-0-sidecar-us1
+    volumes:
+      - ./prometheus/prometheus0_us1.yml:/etc/prometheus/prometheus.yml
+    user: root
+    command:
+      - sidecar
+      - --http-address=0.0.0.0:19091
+      - --grpc-address=0.0.0.0:19191
+      - --reloader.config-file=/etc/prometheus/prometheus.yml
+      - --prometheus.url=http://prometheus-0-us1:9091
+
+  prometheus-1-sidecar-us1:
+    image: thanosio/thanos:v0.37.2
+    container_name: prometheus-1-sidecar-us1
+    volumes:
+      - ./prometheus/prometheus1_us1.yml:/etc/prometheus/prometheus.yml
+    user: root
+    command:
+      - sidecar
+      - --http-address=0.0.0.0:19092
+      - --grpc-address=0.0.0.0:19192
+      - --reloader.config-file=/etc/prometheus/prometheus.yml
+      - --prometheus.url=http://prometheus-1-us1:9092
+
+  querier:
+    image: thanosio/thanos:v0.37.2
+    container_name: querier
+    ports:
+      - 29090:29090
+    command:
+      - query
+      - --http-address=0.0.0.0:29090
+      - --query.replica-label=replica
+      - --store=prometheus-0-sidecar-eu1:19190
+      - --store=prometheus-0-sidecar-us1:19191
+      - --store=prometheus-1-sidecar-us1:19192

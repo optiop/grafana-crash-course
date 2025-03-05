@@ -1,0 +1,52 @@
+---
+services:
+  prometheus-0-eu1:
+    image: prom/prometheus:v3.2.1
+    container_name: prometheus-0-eu1
+    volumes:
+      - ./prometheus/prometheus0_eu1.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus0_eu1_data:/prometheus
+    user: root
+    ports:
+      - 9090:9090
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.listen-address=:9090
+      - --web.external-url=http://localhost:9090
+      - --web.enable-lifecycle
+      - --web.enable-admin-api
+
+  prometheus-0-us1:
+    image: prom/prometheus:v3.2.1
+    container_name: prometheus-0-us1
+    volumes:
+      - ./prometheus/prometheus0_us1.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus0_us1_data:/prometheus
+    user: root
+    ports:
+      - 9091:9091
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.listen-address=:9091
+      - --web.external-url=http://localhost:9091
+      - --web.enable-lifecycle
+      - --web.enable-admin-api
+
+  prometheus-1-us1:
+    image: prom/prometheus:v3.2.1
+    container_name: prometheus-1-us1
+    volumes:
+      - ./prometheus/prometheus1_us1.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus1_us1_data:/prometheus
+    user: root
+    ports:
+      - 9092:9092
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.listen-address=:9092
+      - --web.external-url=http://localhost:9092
+      - --web.enable-lifecycle
+      - --web.enable-admin-api

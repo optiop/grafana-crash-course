@@ -53,6 +53,25 @@ func (*WhatsappService) eventHandler(evt any) {
 	}
 }
 
+// setupWhatsappService initializes and sets up the WhatsApp service for the given WhatsappService instance.
+// It configures logging, connects to the database, retrieves the device store, and establishes a connection
+// to the WhatsApp client. It also handles QR code generation for new logins and retrieves the list of joined groups.
+// Additionally, it starts goroutines to handle sending user and group messages and disconnecting the client.
+//
+// Parameters:
+//   - ctx: The context for managing the lifecycle of the service.
+//   - wg: A wait group to synchronize the shutdown process.
+//
+// The function performs the following steps:
+//  1. Configures logging based on the APP_DEBUG environment variable.
+//  2. Connects to the SQLite database and retrieves the device store.
+//  3. Initializes the WhatsApp client and sets up event handlers.
+//  4. Handles QR code generation for new logins if the client is not already authenticated.
+//  5. Connects the client to the WhatsApp service.
+//  6. Retrieves and logs the list of joined groups.
+//  7. Starts goroutines for handling user messages, group messages, and client disconnection.
+//
+// If any error occurs during the setup process, the function logs the error and panics.
 func (ws *WhatsappService) setupWhatsappService(
 	ctx context.Context,
 	wg *sync.WaitGroup,
@@ -87,6 +106,7 @@ func (ws *WhatsappService) setupWhatsappService(
 		}
 		for evt := range qrChan {
 			if evt.Event == "code" {
+
 				qrterminal.GenerateHalfBlock(evt.Code, qrterminal.L, os.Stdout)
 			} else {
 				log.Println("Login event:", evt.Event)
@@ -112,6 +132,7 @@ func (ws *WhatsappService) setupWhatsappService(
 	}
 
 	go ws.handelSendUserMessages(ctx)
+	go ws.handelSendGroupMessages(ctx)
 	go ws.disconnect(ctx, wg)
 
 	ws.client = client
@@ -135,6 +156,22 @@ func (ws *WhatsappService) handelSendUserMessages(ctx context.Context) {
 		}
 
 		_, err := ws.client.SendMessage(ctx, to, message)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+}
+
+func (ws *WhatsappService) handelSendGroupMessages(ctx context.Context) {
+	for msg := range ws.cGroupMessage {
+		groupJID := types.NewJID(msg.To, "g.us")
+		message := &waE2E.Message{
+			ExtendedTextMessage: &waE2E.ExtendedTextMessage{
+				Text: &msg.Body,
+			},
+		}
+
+		_, err := ws.client.SendMessage(ctx, groupJID, message)
 		if err != nil {
 			log.Fatal(err)
 		}

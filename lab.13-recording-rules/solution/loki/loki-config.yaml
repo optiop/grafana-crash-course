@@ -7,6 +7,14 @@ server:
   grpc_listen_port: 9095
 
 common:
+  storage:
+    s3:
+      endpoint: minio:9000
+      insecure: true
+      bucketnames: loki-data
+      access_key_id: loki
+      secret_access_key: supersecret
+      s3forcepathstyle: true
   ring:
     instance_addr: 127.0.0.1
     kvstore:
@@ -29,8 +37,12 @@ storage_config:
     directory: /tmp/loki/chunks
 
 ruler:
+  storage:
+    s3:
+      bucketnames: loki-ruler
   alertmanager_url: http://localhost:9093
   remote_write:
     enabled: true
-    client:
-      url: http://prometheus:9090/api/v1/write
+    clients:
+      prometheus:
+        url: http://prometheus:9090/api/v1/write

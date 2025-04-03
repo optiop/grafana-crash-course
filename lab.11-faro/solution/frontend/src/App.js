@@ -1,10 +1,11 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Home from './components/Home';
-import Favorites from './components/Favorites';
-import Search from './components/Search';
-import About from './components/About';
-import getUserUUID from './utils/getUserUUID'
+import React from "react";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import Home from "./components/Home";
+import Favorites from "./components/Favorites";
+import Search from "./components/Search";
+import About from "./components/About";
+import getUserUUID from "./utils/getUserUUID";
+import { FaroRoutes } from "@grafana/faro-react";
 
 function App() {
   const userUUID = getUserUUID();
@@ -26,12 +27,12 @@ function App() {
           </li>
         </ul>
       </nav>
-      <Routes>
+      <FaroRoutes>
         <Route path="/" element={<Home />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/search" element={<Search />} />
         <Route path="/about" element={<About />} />
-      </Routes>
+      </FaroRoutes>
       <p className="userId">Your unique user ID is {userUUID}.</p>
     </Router>
   );

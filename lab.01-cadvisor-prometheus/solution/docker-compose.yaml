@@ -5,7 +5,7 @@ services:
     ports:
       - 8080:8080
     volumes:
-      
+      - /:/rootfs:ro
       - /var/run/docker.sock:/var/run/docker.sock:rw
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
@@ -16,7 +16,7 @@ services:
   prometheus:
     image: prom/prometheus:latest
     command:
-      - exit 1
+      - --config.file=/etc/prometheus/prometheus.yaml
     volumes:
       - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
     ports:

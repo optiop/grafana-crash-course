@@ -52,7 +52,7 @@ docker logs -f grafana-whatsapp-webhook
 Copy the **JID** of the group where you want to send alerts 
 **only the number not @g.us or something else**.
 
-**in this example ![Scan QR Code](images/jid.png) 120363400930729957 is the group id for our .env file**
+**in this example ![Scan QR Code](Images/jid.png) 120363400930729957 is the group id for our .env file**
 ### 6. Configure Grafana Contact Points
 Set up a **contact point** in Grafana using the following URLs:
 

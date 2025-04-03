@@ -4,6 +4,9 @@ on:
   push:
     paths:
       - "lab.*/**"  # Runs only when files in any lab directory change
+    tags:
+      - v*
+     
 
 jobs:
   detect-changes:

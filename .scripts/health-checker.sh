@@ -2,11 +2,11 @@
 
 sleep 30
 
-# Get list of all containers and their status
-running_containers=$(docker ps --format "{{.ID}} {{.Names}} {{.State}}")
+# Get list of all containers (including stopped, exited, and dead)
+all_containers=$(docker ps -a --format "{{.ID}} {{.Names}}")
 
-if [ -z "$running_containers" ]; then
-    echo "❌ No running containers found."
+if [ -z "$all_containers" ]; then
+    echo "❌ No containers found."
     exit 1
 fi
 
@@ -24,10 +24,10 @@ while IFS= read -r container_info; do
     if [ "$container_state" == "running" ]; then
         echo "✅ Container $container_name ($container_id) is running."
     else
-        echo "❌ Container $container_name ($container_id) is in state: $container_state. Failing check!"
+        echo "❌ Container $container_name ($container_id) is in state: $container_state. Failing pipeline!"
         failed_containers=1
     fi
-done <<< "$running_containers"
+done <<< "$all_containers"
 
 # Exit with failure if any container is not running
 if [ "$failed_containers" -eq 1 ]; then

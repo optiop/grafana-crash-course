@@ -2,7 +2,7 @@
 
 ![cAdvisor Metrics](slides/public/cadvisor.prometheus.drawio.svg)
 
-In this lab, we will monitor the container status using cAdvisor and Prometheus. The lab is based on `docker`.
+In this lab, we will monitor the container status using cAdvisor and Prometheus. The lab is based on `docker`..
 
 ## cAdvisor to expose container metrics
 

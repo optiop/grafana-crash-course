@@ -66,6 +66,7 @@ services:
       - |
         mkdir -p /data/loki-data && \
         mkdir -p /data/loki-ruler && \
+        chmod -R 777 /data && \
         minio server /data --console-address ":9001"
     environment:
       - MINIO_ROOT_USER=loki

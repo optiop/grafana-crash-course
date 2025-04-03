@@ -37,6 +37,8 @@ storage_config:
     directory: /tmp/loki/chunks
 
 ruler:
+  wal:
+    dir: /tmp/loki/wal
   storage:
     s3:
       bucketnames: loki-ruler

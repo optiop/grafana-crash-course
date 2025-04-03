@@ -1,0 +1,69 @@
+name: Check Health for Lab Projects
+
+on:
+  push:
+    paths:
+      - "lab.*/**"  # Runs only when files in any lab directory change
+    tags:
+      - v*
+     
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.detect.outputs.matrix }}
+    steps:
+      - name: Checkout Repository with Full History
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history to access previous commits
+
+      - name: Detect Changed Lab Directories
+        id: detect
+        run: |
+          # Ensure we have a valid previous commit
+          BEFORE_SHA="${{ github.event.before }}"
+          CURRENT_SHA="${{ github.sha }}"
+          
+          # If BEFORE_SHA is empty (e.g., new branch), use the last commit
+          if [ -z "$BEFORE_SHA" ]; then
+            BEFORE_SHA=$(git rev-parse HEAD~1)
+          fi
+
+          echo "Comparing $BEFORE_SHA...$CURRENT_SHA"
+
+          # Find changed directories that match "lab.*"
+          CHANGED_DIRS=$(git diff --name-only $BEFORE_SHA $CURRENT_SHA | grep -oE '^lab[^/]+' | sort -u | jq -R -s -c 'split("\n")[:-1]')
+
+          # If no directories were detected, set an empty matrix
+          if [ -z "$CHANGED_DIRS" ]; then
+            CHANGED_DIRS="[]"
+          fi
+
+          echo "Detected directories: $CHANGED_DIRS"
+          echo "matrix=$CHANGED_DIRS" >> $GITHUB_OUTPUT  # Pass output correctly
+
+  run-health-check:
+    needs: detect-changes
+    if: ${{ fromJson(needs.detect-changes.outputs.matrix) != '[]' && fromJson(needs.detect-changes.outputs.matrix) != null }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        directory: ${{ fromJson(needs.detect-changes.outputs.matrix) }}
+      fail-fast: false  # Allows other jobs to continue even if one fails
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Pull Docker Compose Images
+        run: docker compose --file ${{ matrix.directory }}/solution/docker-compose.yaml pull
+
+      - name: Run Compose File
+        run: docker compose --file ${{ matrix.directory }}/solution/docker-compose.yaml up -d
+
+      - name: Change Permission of Script
+        run: chmod +x .scripts/health-checker.sh
+
+      - name: Run Health Check Script
+        run: bash .scripts/health-checker.sh

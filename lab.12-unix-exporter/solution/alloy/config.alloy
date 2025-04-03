@@ -1,0 +1,19 @@
+
+// Host cAdvisor on the Docker socket to expose container metrics.
+prometheus.exporter.unix "server" {
+}
+
+// Configure a prometheus.scrape component to collect cadvisor metrics
+prometheus.scrape "scraper" {
+  targets    = prometheus.exporter.unix.server.targets
+  forward_to = [ prometheus.remote_write.demo.receiver ]
+
+  scrape_interval = "10s"
+}
+
+// Configure a prometheus.remote_write component to send metrics 
+prometheus.remote_write "demo" {
+  endpoint {
+    url = "http://prometheus:9090/api/v1/write"
+  }
+}

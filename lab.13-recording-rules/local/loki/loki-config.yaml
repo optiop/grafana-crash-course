@@ -7,14 +7,6 @@ server:
   grpc_listen_port: 9095
 
 common:
-  storage:
-    s3:
-      endpoint: minio:9000
-      insecure: true
-      bucketnames: loki-data
-      access_key_id: loki
-      secret_access_key: supersecret
-      s3forcepathstyle: true
   ring:
     instance_addr: 127.0.0.1
     kvstore:
@@ -40,10 +32,10 @@ ruler:
   wal:
     dir: /tmp/loki/wal
   storage:
-    s3:
-      bucketnames: loki-ruler
+    type: local
+    local:
+      directory: /etc/loki/rules
   alertmanager_url: http://localhost:9093
-  rule_path: /tmp/rules
   remote_write:
     enabled: true
     clients:

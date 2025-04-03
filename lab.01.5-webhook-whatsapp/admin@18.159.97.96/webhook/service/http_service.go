@@ -1,0 +1,130 @@
+package service
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+	"sync"
+	"time"
+	"whatsapp_service/entity"
+	"whatsapp_service/interfaces"
+)
+
+var appToken = os.Getenv("APP_TOKEN")
+
+func sendNewGrafanaAlertWhatsAppMessageToUser(ws interfaces.WhatsappService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		token := r.PathValue("token")
+		if token != appToken {
+			http.Error(w, "token is required", http.StatusBadRequest)
+			return
+		}
+
+		phoneNumber := r.PathValue("user_id")
+		if phoneNumber == "" {
+			http.Error(w, "phone number is required", http.StatusBadRequest)
+			return
+		}
+
+		if phoneNumber[0] == '+' {
+			phoneNumber = phoneNumber[1:]
+		}
+
+		var alert GrafanaAlert
+		if err := json.NewDecoder(r.Body).Decode(&alert); err != nil {
+			_, _ = w.Write([]byte("Error decoding alert"))
+			return
+		}
+
+		if alert.Message == "" {
+			http.Error(w, "message is required", http.StatusBadRequest)
+			return
+		}
+
+		message := entity.Message{
+			To:   phoneNumber,
+			Body: alert.Message,
+		}
+
+		ws.SendNewWhatsAppMessageToUser(message)
+
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte("Message sent to " + message.To))
+	}
+}
+
+func sendNewGrafanaAlertWhatsAppMessageToGroup(ws interfaces.WhatsappService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		token := r.PathValue("token")
+		if token != appToken {
+			http.Error(w, "token is required", http.StatusBadRequest)
+			return
+		}
+
+		groupId := r.PathValue("group_id")
+		if groupId == "" {
+			http.Error(w, "group_id is required", http.StatusBadRequest)
+			return
+		}
+
+		var alert GrafanaAlert
+		if err := json.NewDecoder(r.Body).Decode(&alert); err != nil {
+			_, _ = w.Write([]byte("Error decoding alert"))
+			return
+		}
+
+		if alert.Message == "" {
+			http.Error(w, "message is required", http.StatusBadRequest)
+			return
+		}
+
+		message := entity.Message{
+			To:   groupId,
+			Body: alert.Message,
+		}
+
+		ws.SendNewWhatsAppMessageToGroup(message)
+
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte("Message sent to " + message.To))
+	}
+}
+
+func Run(
+	ctx context.Context,
+	ws interfaces.WhatsappService,
+	wg *sync.WaitGroup,
+) {
+	httpMux := http.NewServeMux()
+	httpMux.HandleFunc("POST /whatsapp/send/grafana-alert/user/{user_id}/{token}", sendNewGrafanaAlertWhatsAppMessageToUser(ws))
+	httpMux.HandleFunc("POST /whatsapp/send/grafana-alert/group/{group_id}/{token}", sendNewGrafanaAlertWhatsAppMessageToGroup(ws))
+
+	server := &http.Server{
+		Addr:    ":8080",
+		Handler: httpMux,
+	}
+
+	go func() {
+		defer wg.Done()
+		fmt.Println("Starting server on :8080")
+		if err := server.ListenAndServe(); err != http.ErrServerClosed {
+			fmt.Printf("HTTP server error: %v\n", err)
+		}
+		fmt.Println("HTTP server stopped")
+	}()
+
+	go func() {
+		defer wg.Done()
+		<-ctx.Done()
+		fmt.Println("Shutting down server...")
+
+		shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer shutdownCancel()
+
+		if err := server.Shutdown(shutdownCtx); err != nil {
+			fmt.Printf("Error during server shutdown: %v\n", err)
+		}
+	}()
+}

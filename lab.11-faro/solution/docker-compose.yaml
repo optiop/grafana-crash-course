@@ -1,4 +1,30 @@
 services:
+  # Tempo runs as user 10001, and docker compose creates the volume as root.
+  # As such, we need to chown the volume in order for Tempo to start correctly.
+  init:
+    image: &tempoImage grafana/tempo:latest
+    user: root
+    entrypoint:
+      - "chown"
+      - "10001:10001"
+      - "/var/tempo"
+    volumes:
+      - ./tempo/data:/var/tempo
+
+  tempo:
+    image: *tempoImage
+    command: ["-config.file=/etc/tempo.yaml"]
+    volumes:
+      - ./tempo/tempo.yaml:/etc/tempo.yaml
+      - ./tempo/data:/var/tempo
+    ports:
+      - "3200" # tempo
+      - "4317" # otlp grpc
+    depends_on:
+      - init
+    networks:
+      - app-network
+
   backend:
     build:
       context: ./steam-service
@@ -24,6 +50,7 @@ services:
     privileged: true
     ports:
       - 12345:12345
+      - 4319:4319
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:rw
       - ./alloy/config.alloy:/etc/alloy/config.alloy
@@ -32,7 +59,8 @@ services:
       - /etc/alloy/config.alloy
       - --storage.path=/var/lib/alloy/data
       - --server.http.listen-addr=0.0.0.0:12345
-
+    networks:
+      - app-network
   loki:
     image: grafana/loki
     ports:
@@ -41,6 +69,8 @@ services:
     restart: always
     volumes:
       - ./loki/loki-config.yaml:/etc/loki/loki-config.yaml
+    networks:
+      - app-network
 
   grafana:
     image: grafana/grafana:11.4.0
@@ -55,7 +85,8 @@ services:
       GF_SECURITY_ALLOW_EMBEDDING: true
     ports:
       - 3000:3000
-
+    networks:
+      - app-network
 networks:
   app-network:
     driver: bridge

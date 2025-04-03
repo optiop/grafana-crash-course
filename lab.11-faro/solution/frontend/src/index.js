@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import {
-  getWebInstrumentation,
+  getWebInstrumentations,
   initializeFaro,
   ReactIntegration,
   ReactRouterVersion,
@@ -18,7 +18,8 @@ import {
 } from "react-router-dom";
 
 initializeFaro({
-  url: "https://faro.fo11y.com",
+  // url: "http://localhost:12345/alloy/api/v1/push",
+  url: "http://localhost:4319/collect",
   app: {
     name: "fo11y-demo",
     version: "1.0.0",
@@ -26,7 +27,7 @@ initializeFaro({
   },
 
   instrumentations: [
-    ...getWebInstrumentation(),
+    ...getWebInstrumentations(),
 
     new TracingInstrumentation(),
 

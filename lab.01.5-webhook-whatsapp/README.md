@@ -21,13 +21,16 @@ PHONE_NUMBER=your_phone_number_without_plus
 ### 3. Run the Docker Container
 Use the following command to start the service with Docker:
 ```bash
-docker run -p 8080:8080 \
+docker compose up -d
+```
+or use: 
+```bash
+  docker run -p 8080:8080 \
   --env-file .env.example  \
   -name grafana-whatsapp-webhook \
   --rm -v ./out:/app/out/ \
   -d ghcr.io/optiop/grafana-whatsapp-webhook:v0.1.5
 ```
-
 ### 4. Authenticate with WhatsApp
 - **QR Code Generation:**
   - A QR code will be generated and saved into the `./out/qr.png` directory.

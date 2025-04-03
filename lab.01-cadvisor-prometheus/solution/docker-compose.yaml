@@ -1,6 +1,6 @@
 services:
   cadvisor:
-    image: gcr.io/cadvisor/cadvi
+    image: gcr.io/cadvisor/cadvisor
     privileged: true
     ports:
       - 8080:8080
@@ -16,7 +16,7 @@ services:
   prometheus:
     image: prom/prometheus:latest
     command:
-      - --config.file=/etc/prometheus/prometheus.yaml
+      - exit 1
     volumes:
       - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
     ports:

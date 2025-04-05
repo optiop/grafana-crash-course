@@ -29,7 +29,8 @@ This guide walks you through the steps to set up **Grafana Loki with multiple Al
 ```
 🟢 **Important**:  
 ✅ `auth_enabled: true` in Loki config is **required** for **multi-tenancy**.  
-Each write must specify a `tenant_id`, and queries can be scoped to one.
+Each write in Alloy config must specify a `tenant_id`, and queries can be scoped to one.
+
 **In each Grafana data source  must specify a `jsonData` and `secureJsonData`, for header orgId.**
 
 ---

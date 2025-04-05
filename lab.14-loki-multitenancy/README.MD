@@ -29,8 +29,7 @@ project-root/
 ## 🐳 Step 1: Create `docker-compose.yml`
 
 ```yaml
-version: "3.9"
-
+name: Loki-tenancy
 services:
   loki:
     image: grafana/loki:3.0.0

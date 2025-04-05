@@ -39,7 +39,7 @@
     ports:
       - 12346:12345
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:rw
+      - /var/log:/var/log:ro
       - ./config2.alloy:/etc/alloy/config.alloy
     command:
       - run
@@ -54,33 +54,12 @@
        - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
      networks:
       - app_net
+     volumes:
+       - ./ds.yaml:/etc/grafana/provisioning/datasources/ds.yaml
      entrypoint:
        - sh
        - -euc
-       - |
-         mkdir -p /etc/grafana/provisioning/datasources
-         cat <<EOF > /etc/grafana/provisioning/datasources/ds.yaml
-         apiVersion: 1
-         datasources:
-         - name: Loki
-           type: loki
-           access: proxy
-           orgId: 1
-           url: http://loki:3100
-           basicAuth: false
-           isDefault: false
-           version: 1
-           editable: false
-         - name: Prometheus
-           type: prometheus
-           orgId: 1
-           url: http://prometheus:9090
-           basicAuth: false
-           isDefault: true
-           version: 1
-           editable: false
-         EOF
-         /run.sh
+       - /run.sh
      image: grafana/grafana:11.0.0
      ports:
        - "3000:3000"

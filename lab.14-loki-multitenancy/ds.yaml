@@ -1,0 +1,24 @@
+apiVersion: 1
+
+datasources:
+  - name: optiop1
+    type: loki
+    access: proxy
+    url: http://loki:3100
+    jsonData:
+      httpHeaderName1: "X-Scope-OrgID"
+    secureJsonData:
+      httpHeaderValue1: "optiop1"
+    isDefault: false
+    editable: false
+
+  - name: optiop2
+    type: loki
+    access: proxy
+    url: http://loki:3100
+    jsonData:
+      httpHeaderName1: "X-Scope-OrgID"
+    secureJsonData:
+      httpHeaderValue1: "optiop2"
+    isDefault: false
+    editable: false

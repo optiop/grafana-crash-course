@@ -1,0 +1,90 @@
+
+ services:
+   loki:
+     image: grafana/loki:3.0.0
+     hostname: loki
+     volumes:
+       - ./local-config.yaml:/etc/loki/local-config.yaml
+     networks:
+      - app_net
+     ports:
+       - "3100:3100"
+     command: -config.file=/etc/loki/local-config.yaml
+
+
+   alloy:
+    # Grafana Alloy version 1.5.1
+    # https://hub.docker.com/r/grafana/alloy/tags
+    image: grafana/alloy:v1.7.5
+    privileged: true
+    ports:
+      - 12345:12345
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+      - ./config.alloy:/etc/alloy/config.alloy
+    networks:
+     - app_net
+    command:
+      - run
+      - /etc/alloy/config.alloy
+      - --storage.path=/var/lib/alloy/data
+      - --server.http.listen-addr=0.0.0.0:12345
+   alloy-2:
+    # Grafana Alloy version 1.5.1
+    # https://hub.docker.com/r/grafana/alloy/tags
+    image: grafana/alloy:v1.7.5
+    privileged: true
+    networks:
+     - app_net
+    ports:
+      - 12346:12345
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+      - ./config2.alloy:/etc/alloy/config.alloy
+    command:
+      - run
+      - /etc/alloy/config.alloy
+      - --storage.path=/var/lib/alloy/data
+      - --server.http.listen-addr=0.0.0.0:12345
+
+   grafana:
+     environment:
+       - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+       - GF_AUTH_ANONYMOUS_ENABLED=true
+       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+     networks:
+      - app_net
+     entrypoint:
+       - sh
+       - -euc
+       - |
+         mkdir -p /etc/grafana/provisioning/datasources
+         cat <<EOF > /etc/grafana/provisioning/datasources/ds.yaml
+         apiVersion: 1
+         datasources:
+         - name: Loki
+           type: loki
+           access: proxy
+           orgId: 1
+           url: http://loki:3100
+           basicAuth: false
+           isDefault: false
+           version: 1
+           editable: false
+         - name: Prometheus
+           type: prometheus
+           orgId: 1
+           url: http://prometheus:9090
+           basicAuth: false
+           isDefault: true
+           version: 1
+           editable: false
+         EOF
+         /run.sh
+     image: grafana/grafana:11.0.0
+     ports:
+       - "3000:3000"
+ networks:
+  app_net:
+   name: app_net
+    

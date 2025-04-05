@@ -160,7 +160,7 @@ loki.source.docker "flog_scrape" {
 loki.write "default" {
   endpoint {
     url = "http://loki:3100/loki/api/v1/push"
-    **tenant_id = "optiop1"**
+    tenant_id = "optiop1"
   }
   external_labels = {}
 }
@@ -188,7 +188,7 @@ loki.source.file "example" {
 loki.write "default" {
   endpoint {
     url = "http://localhost/loki/api/v1/push"
-    **tenant_id = "optiop2"**
+    tenant_id = "optiop2"
   }
   external_labels = {}
 }

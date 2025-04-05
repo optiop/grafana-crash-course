@@ -4,7 +4,7 @@
      image: grafana/loki:3.0.0
      hostname: loki
      volumes:
-       - ./local-config.yaml:/etc/loki/local-config.yaml
+       - ./Loki/local-config.yaml:/etc/loki/local-config.yaml
      networks:
       - app_net
      ports:
@@ -21,7 +21,7 @@
       - 12345:12345
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:rw
-      - ./config.alloy:/etc/alloy/config.alloy
+      - ./Alloy/config.alloy:/etc/alloy/config.alloy
     networks:
      - app_net
     command:
@@ -40,7 +40,7 @@
       - 12346:12345
     volumes:
       - /var/log:/var/log:ro
-      - ./config2.alloy:/etc/alloy/config.alloy
+      - ./Alloy/config2.alloy:/etc/alloy/config.alloy
     command:
       - run
       - /etc/alloy/config.alloy
@@ -55,7 +55,7 @@
      networks:
       - app_net
      volumes:
-       - ./ds.yaml:/etc/grafana/provisioning/datasources/ds.yaml
+       - ./Grafana/provisioning/datasources/ds.yaml:/etc/grafana/provisioning/datasources/ds.yaml
      entrypoint:
        - sh
        - -euc

@@ -58,8 +58,8 @@ To explore tenants:
 
 ## 🧪 Test It Out
 
-- Start a Docker container with logs and check Alloy-1's behavior.
-- Generate system logs (`echo "hello log" >> /var/log/test.log`) and watch Alloy-2 push them to Loki.
+- From the explore in Grafana, checkout data source **Optiop1**. Alloy for this client is configured to listen to logs from container `alloy-1`. Checkout label `integration`. Try the same
+for client **Optiop2** by chosing its datasource.
 
 ---
 

@@ -1,19 +1,15 @@
-
  services:
    loki:
      image: grafana/loki:3.0.0
      hostname: loki
      volumes:
-       - ./Loki/local-config.yaml:/etc/loki/local-config.yaml
-     networks:
-      - app_net
+       - ./loki/local-config.yaml:/etc/loki/local-config.yaml
      ports:
        - "3100:3100"
      command: -config.file=/etc/loki/local-config.yaml
 
 
-   alloy:
-    # Grafana Alloy version 1.5.1
+   alloy-1:
     # https://hub.docker.com/r/grafana/alloy/tags
     image: grafana/alloy:v1.7.5
     privileged: true
@@ -21,26 +17,21 @@
       - 12345:12345
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:rw
-      - ./alloy/config.alloy:/etc/alloy/config.alloy
-    networks:
-     - app_net
+      - ./alloy-1/config.alloy:/etc/alloy/config.alloy
     command:
       - run
       - /etc/alloy/config.alloy
       - --storage.path=/var/lib/alloy/data
       - --server.http.listen-addr=0.0.0.0:12345
    alloy-2:
-    # Grafana Alloy version 1.5.1
     # https://hub.docker.com/r/grafana/alloy/tags
     image: grafana/alloy:v1.7.5
     privileged: true
-    networks:
-     - app_net
     ports:
       - 12346:12345
     volumes:
       - /var/log:/var/log:ro
-      - ./alloy/config2.alloy:/etc/alloy/config.alloy
+      - ./alloy-2/config.alloy:/etc/alloy/config.alloy
     command:
       - run
       - /etc/alloy/config.alloy
@@ -53,13 +44,7 @@
        - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
        - GF_AUTH_ANONYMOUS_ENABLED=true
        - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
-     networks:
-      - app_net
      volumes:
        - ./grafana/provisioning/:/etc/grafana/provisioning/
      ports:
        - "3000:3000"
- networks:
-  app_net:
-   name: app_net
-    

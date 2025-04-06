@@ -1,0 +1,27 @@
+logging {
+	level = "debug"
+
+	// Forward internal logs to the local Loki instance.
+	write_to = [loki.relabel.alloy_logs.receiver]
+}
+
+loki.relabel "alloy_logs"{
+	rule {
+		target_label = "instance"
+		replacement = constants.hostname
+	}
+
+	rule {
+		target_label = "job"
+		replacement = "integrations/optiop1"
+	}
+
+	forward_to = [loki.write.default.receiver]
+}
+
+loki.write "default" {
+  endpoint {
+    url = "http://loki:3100/loki/api/v1/push"
+    tenant_id = "optiop1"
+  }
+}

@@ -21,7 +21,7 @@
       - 12345:12345
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:rw
-      - ./Alloy/config.alloy:/etc/alloy/config.alloy
+      - ./alloy/config.alloy:/etc/alloy/config.alloy
     networks:
      - app_net
     command:
@@ -40,7 +40,7 @@
       - 12346:12345
     volumes:
       - /var/log:/var/log:ro
-      - ./Alloy/config2.alloy:/etc/alloy/config.alloy
+      - ./alloy/config2.alloy:/etc/alloy/config.alloy
     command:
       - run
       - /etc/alloy/config.alloy
@@ -48,6 +48,7 @@
       - --server.http.listen-addr=0.0.0.0:12345
 
    grafana:
+     image: grafana/grafana:11.0.0
      environment:
        - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
        - GF_AUTH_ANONYMOUS_ENABLED=true
@@ -55,12 +56,7 @@
      networks:
       - app_net
      volumes:
-       - ./Grafana/provisioning/datasources/ds.yaml:/etc/grafana/provisioning/datasources/ds.yaml
-     entrypoint:
-       - sh
-       - -euc
-       - /run.sh
-     image: grafana/grafana:11.0.0
+       - ./grafana/provisioning/:/etc/grafana/provisioning/
      ports:
        - "3000:3000"
  networks:

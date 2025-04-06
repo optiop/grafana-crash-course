@@ -1,0 +1,51 @@
+ services:
+   loki:
+     image: grafana/loki:3.0.0
+     hostname: loki
+     volumes:
+       - ./loki/local-config.yaml:/etc/loki/local-config.yaml
+     ports:
+       - "3100:3100"
+     command: -config.file=/etc/loki/local-config.yaml
+
+
+   alloy-1:
+    # https://hub.docker.com/r/grafana/alloy/tags
+    image: grafana/alloy:v1.7.5
+    privileged: true
+    ports:
+      - 12345:12345
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+      - ./alloy-1/config.alloy:/etc/alloy/config.alloy
+    command:
+      - run
+      - /etc/alloy/config.alloy
+      - --storage.path=/var/lib/alloy/data
+      - --server.http.listen-addr=0.0.0.0:12345
+
+   alloy-2:
+    # https://hub.docker.com/r/grafana/alloy/tags
+    image: grafana/alloy:v1.7.5
+    privileged: true
+    ports:
+      - 12346:12345
+    volumes:
+      - /var/log:/var/log:ro
+      - ./alloy-2/config.alloy:/etc/alloy/config.alloy
+    command:
+      - run
+      - /etc/alloy/config.alloy
+      - --storage.path=/var/lib/alloy/data
+      - --server.http.listen-addr=0.0.0.0:12345
+
+   grafana:
+     image: grafana/grafana:11.0.0
+     environment:
+       - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+       - GF_AUTH_ANONYMOUS_ENABLED=true
+       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+     volumes:
+       - ./grafana/provisioning/:/etc/grafana/provisioning/
+     ports:
+       - "3000:3000"

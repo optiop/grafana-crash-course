@@ -3,3 +3,4 @@ slide-theme/dist
 node_modules/
 package-lock.json
 .vscode
+**/tempo/data

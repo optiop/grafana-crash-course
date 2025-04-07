@@ -1,0 +1,117 @@
+otelcol.receiver.otlp "otlp_receiver" {
+  grpc {
+    endpoint = "0.0.0.0:4317"
+  }
+  http {
+    endpoint = "0.0.0.0:4318"
+  }
+
+  output {
+    traces = [otelcol.exporter.otlp.grafanacloud.input,]
+  }
+}
+
+otelcol.exporter.otlp "grafanacloud" {
+  client {
+    endpoint = "tempo:4317"
+    tls {
+			insecure = true
+		}
+  }
+}
+
+discovery.docker "flog_scrape" {
+  host = "unix:///var/run/docker.sock"
+  refresh_interval = "5s"
+}
+
+discovery.relabel "flog_scrape" {
+  targets = []
+
+  rule {
+    source_labels = ["__meta_docker_container_name"]
+    regex         = "/(.*)"
+    target_label  = "container"
+  }
+
+  rule {
+    source_labels = ["__meta_docker_container_log_stream"]
+    target_label  = "logstream"
+  }
+
+  rule {
+    source_labels = ["__meta_docker_container_label_logging_jobname"]
+    target_label  = "job"
+  }
+}
+
+loki.source.docker "flog_scrape" {
+  host             = "unix:///var/run/docker.sock"
+  targets          = discovery.docker.flog_scrape.targets
+  forward_to       = [loki.write.default.receiver]
+  relabel_rules    = discovery.relabel.flog_scrape.rules
+  refresh_interval = "5s"
+}
+
+loki.write "default" {
+  endpoint {
+    url = "http://loki:3100/loki/api/v1/push"
+  }
+  external_labels = {}
+}
+
+faro.receiver "integrations_app_agent_receiver" {
+  server {
+    listen_address           = "0.0.0.0"
+    listen_port             = 4319
+    cors_allowed_origins     = ["*"]
+    max_allowed_payload_size = "10MiB"
+    rate_limiting {
+      rate = 100
+    }
+  }
+  sourcemaps { }
+  output {
+    logs = [loki.process.logs_process_client.receiver]
+  }
+}
+
+loki.process "logs_process_client" {
+  forward_to = [loki.write.logs_write_client.receiver]
+
+  stage.logfmt {
+    mapping = {
+      "kind" = "kind",
+      "service_name" = "app_name",
+      "app" = "app_name",
+      "environment" = "app_environment",
+      "version" = "app_version",
+    }
+  }
+  stage.labels {
+    values = {
+      "kind" = "kind",
+      "service_name" = "service_name",
+      "app" = "app",
+      "environment" = "environment",
+      "version" = "version",
+    }
+  }
+}
+
+logging {
+  level = "info"
+}
+
+loki.write "logs_write_client" {
+  endpoint {
+    url = "http://loki:3100/loki/api/v1/push"
+    tls_config {
+      insecure_skip_verify = false
+    }
+  }
+  external_labels = {
+    cluster = "dev01",
+    "k8s_cluster_name" = "dev01",
+  }
+}

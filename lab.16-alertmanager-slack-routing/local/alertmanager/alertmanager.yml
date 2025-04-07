@@ -15,12 +15,12 @@ route:
 receivers:
   - name: 'prod-slack-channel'
     slack_configs:
-      - api_url: 'https://hooks.slack.com/services/'
+      - api_url: 'https://hooks.slack.com/services'
         channel: '#prod-alerts'
         send_resolved: true
 
   - name: 'pre-prod-slack-channel'
     slack_configs:
-      - api_url: 'https://hooks.slack.com/services/'
+      - api_url: 'https://hooks.slack.com/services'
         channel: '#pre-prod-alerts'
         send_resolved: true

@@ -1876,39 +1876,14 @@
           "text": "Loki",
           "value": "P8E80F9AEF21F6940"
         },
-        "hide": 2,
         "includeAll": false,
-        "label": "log",
+        "label": "datasource",
         "name": "Log",
         "options": [],
         "query": "loki",
         "refresh": 1,
         "regex": "",
         "type": "datasource"
-      },
-      {
-        "current": {
-          "text": "prod",
-          "value": "prod"
-        },
-        "datasource": {
-          "type": "loki",
-          "uid": "${Log}"
-        },
-        "definition": "",
-        "includeAll": false,
-        "label": "Cluster",
-        "name": "cluster",
-        "options": [],
-        "query": {
-          "label": "cluster",
-          "refId": "LokiVariableQueryEditor-VariableQuery",
-          "stream": "",
-          "type": 1
-        },
-        "refresh": 1,
-        "regex": "/.*prod/",
-        "type": "query"
       },
       {
         "current": {

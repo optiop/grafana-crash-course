@@ -1,17 +1,26 @@
-global:
-  smtp_from: 'hello@optiop.org'
-  smtp_hello: optiop.org
-  smtp_smarthost: stunnel:465
-  smtp_require_tls: false
-  smtp_auth_username: 'alertmanager@optiop.org'
-  smtp_auth_password: 'password'
-
 route:
-  receiver: 'admin'
+  group_by: ['alertname']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 3h
+  receiver: 'pre-prod-slack-channel'
+
+  routes:
+    - match:
+        environment: 'prod'
+      receiver: 'prod-slack-channel'
+      
+    - receiver: 'pre-prod-slack-channel'
 
 receivers:
-- name: 'admin'
-  email_configs:
-  - to: 'admin@optiop.org'
-    tls_config:
-      insecure_skip_verify: true
+  - name: 'prod-slack-channel'
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/'
+        channel: '#prod-alerts'
+        send_resolved: true
+
+  - name: 'pre-prod-slack-channel'
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/'
+        channel: '#pre-prod-alerts'
+        send_resolved: true

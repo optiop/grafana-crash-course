@@ -1,0 +1,65 @@
+services:
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus:/prometheus
+    command:
+      - '--config.file=/prometheus/prometheus.yml'
+    ports:
+      - 9090:9090
+    depends_on:
+      - alertmanager
+    restart: always
+
+  alertmanager:
+    image: prom/alertmanager
+    volumes:
+      - ./alertmanager:/prometheus
+    command:
+      - '--config.file=/prometheus/alertmanager.yml'
+    ports:
+      - 9093:9093
+
+  node:
+    image: prom/node-exporter
+    ports:
+      - 9100:9100
+    restart: always
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor
+    privileged: true
+    ports:
+      - 9880:8080
+    volumes:
+      - /:/rootfs:ro
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    devices:
+      - /dev/kmsg
+
+  collectd:
+    image: prom/collectd-exporter
+    ports:
+      - 9103:9103
+    restart: always
+
+  alerta:
+    image: alerta/alerta-web
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=mongodb://db:27017/monitoring
+      - ADMIN_USERS=admin@alerta.io
+      - PLUGINS=remote_ip,reject,heartbeat,blackout,prometheus
+      - ALERTMANAGER_API_URL=http://alertmanager:9093
+    restart: always
+
+  db:
+    image: mongo
+    restart: always
+

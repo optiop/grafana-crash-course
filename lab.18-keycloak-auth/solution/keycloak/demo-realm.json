@@ -1,4 +1,5 @@
-{
+{ 
+  "ssl-required" : "none",
   "id": "imbue-sustainability",
   "realm": "imbue-sustainability",
   "displayName": "Imbue sustainability",

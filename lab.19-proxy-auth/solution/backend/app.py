@@ -6,8 +6,7 @@ from flask import (
     Flask,
     Response,
     request,
-    render_template_string,
-    redirect,
+    render_template_string
 )
 
 app = Flask(__name__)

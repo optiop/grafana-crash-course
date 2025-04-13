@@ -1,0 +1,55 @@
+faro.receiver "integrations_app_agent_receiver" {
+  server {
+    listen_address           = "0.0.0.0"
+    listen_port             = 4319
+    cors_allowed_origins     = ["*"]
+    max_allowed_payload_size = "10MiB"
+    rate_limiting {
+      rate = 100
+    }
+  }
+  sourcemaps { }
+  output {
+    logs = [loki.process.logs_process_client.receiver]
+  }
+}
+
+loki.process "logs_process_client" {
+  forward_to = [loki.write.logs_write_client.receiver]
+
+  stage.logfmt {
+    mapping = {
+      "kind" = "kind",
+      "service_name" = "app_name",
+      "app" = "app_name",
+      "environment" = "app_environment",
+      "version" = "app_version",
+    }
+  }
+  stage.labels {
+    values = {
+      "kind" = "kind",
+      "service_name" = "service_name",
+      "app" = "app",
+      "environment" = "environment",
+      "version" = "version",
+    }
+  }
+}
+
+logging {
+  level = "info"
+}
+
+loki.write "logs_write_client" {
+  endpoint {
+    url = "http://loki:3100/loki/api/v1/push"
+    tls_config {
+      insecure_skip_verify = false
+    }
+  }
+  external_labels = {
+    cluster = "dev01",
+    "k8s_cluster_name" = "dev01",
+  }
+}

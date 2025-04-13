@@ -1,0 +1,4 @@
+htpasswd
+
+# python virtual environment
+.venv

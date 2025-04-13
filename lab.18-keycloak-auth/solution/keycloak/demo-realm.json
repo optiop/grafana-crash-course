@@ -1,7 +1,7 @@
 {
-  "id": "imbue-sustainability",
-  "realm": "imbue-sustainability",
-  "displayName": "Imbue sustainability",
+  "id": "grafana",
+  "realm": "grafana",
+  "displayName": "Grafana",
   "enabled": true,
   "registrationAllowed": false,
   "rememberMe": true,
@@ -13,7 +13,7 @@
         "name": "serviceAccount",
         "composite": false,
         "clientRole": false,
-        "containerId": "imbue-sustainability",
+        "containerId": "grafana",
         "attributes": {}
       },
       {
@@ -21,7 +21,7 @@
         "name": "user",
         "composite": false,
         "clientRole": false,
-        "containerId": "imbue-sustainability",
+        "containerId": "grafana",
         "attributes": {}
       },
       {
@@ -29,7 +29,7 @@
         "name": "admin",
         "composite": false,
         "clientRole": false,
-        "containerId": "imbue-sustainability",
+        "containerId": "grafana",
         "attributes": {}
       },
       {
@@ -37,7 +37,7 @@
         "name": "unicorn",
         "composite": false,
         "clientRole": false,
-        "containerId": "imbue-sustainability",
+        "containerId": "grafana",
         "attributes": {}
       }
     ]
@@ -45,8 +45,8 @@
   "clients": [
     {
       "id": "5fcb0ba8-031c-451a-b108-055efa1ce20e",
-      "clientId": "dashboard",
-      "name": "Imbue Sustainability Dashboards",
+      "clientId": "grafana",
+      "name": "Grafana Auth",
       "description": "Use to allow access for client to Grafana and Dashboard",
       "rootUrl": "http://localhost:3000",
       "adminUrl": "http://localhost:3000",
@@ -73,25 +73,24 @@
         "oauth2.device.authorization.grant.enabled": "false",
         "client.secret.creation.time": "1709493045",
         "backchannel.logout.session.required": "true",
-        "backchannel.logout.revoke.offline.tokens": "true",
-        "login_theme": "dasniko"
+        "backchannel.logout.revoke.offline.tokens": "true"
       },
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": true,
       "nodeReRegistrationTimeout": -1,
       "protocolMappers": [
         {
-          "name": "dashboard",
+          "name": "grafana",
           "protocol": "openid-connect",
           "protocolMapper": "oidc-usermodel-attribute-mapper",
           "consentRequired": false,
           "config": {
             "introspection.token.claim": "true",
             "userinfo.token.claim": "true",
-            "user.attribute": "dashboard",
+            "user.attribute": "grafana",
             "id.token.claim": "true",
             "access.token.claim": "true",
-            "claim.name": "dashboard",
+            "claim.name": "grafana",
             "jsonType.label": "String"
           }
         }
@@ -116,30 +115,6 @@
       }
     }
   ],
-  "users": [
-    {
-      "id": "bffb22c5-f548-49f2-b969-477a45fbcee9",
-      "createdTimestamp": 1621071095966,
-      "username": "service-account-dashboard",
-      "enabled": true,
-      "totp": false,
-      "emailVerified": false,
-      "serviceAccountClientId": "dashboard",
-      "disableableCredentialTypes": [],
-      "requiredActions": [],
-      "realmRoles": ["serviceAccount"],
-      "notBefore": 0,
-      "groups": []
-    }
-  ],
-  "smtpServer": {
-    "starttls": "",
-    "auth": "",
-    "port": "1025",
-    "host": "mail",
-    "from": "bookshop@keycloak.local",
-    "ssl": ""
-  },
   "attributes": {
     "acr.loa.map": "{\"bronze\":\"0\",\"silver\":\"1\",\"gold\":\"2\"}"
   }

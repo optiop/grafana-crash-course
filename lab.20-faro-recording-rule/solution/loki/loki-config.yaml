@@ -27,3 +27,17 @@ schema_config:
 storage_config:
   filesystem:
     directory: /tmp/loki/chunks
+
+ruler:
+  wal:
+    dir: /tmp/loki/wal
+  storage:
+    type: local
+    local:
+      directory: /etc/loki/rules
+  alertmanager_url: http://localhost:9093
+  remote_write:
+    enabled: true
+    clients:
+      prometheus:
+        url: http://prometheus:9090/api/v1/write

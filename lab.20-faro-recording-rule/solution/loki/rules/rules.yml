@@ -1,0 +1,8 @@
+groups:
+  - name: test
+    interval: 1m
+    rules:
+    - record: lokiTest
+      expr: 0
+      labels:
+        cluster: "us-central1"

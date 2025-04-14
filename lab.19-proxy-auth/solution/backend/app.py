@@ -6,7 +6,8 @@ from flask import (
     Flask,
     Response,
     request,
-    render_template_string
+    render_template_string,
+    redirect,
 )
 
 app = Flask(__name__)
@@ -254,6 +255,23 @@ def go_to_grafana():
         return "Token expired", 403
     except jwt.InvalidTokenError:
         return "Invalid token", 403
+
+
+@app.route('/logout')
+def logout():
+    token = request.cookies.get('token')
+    if not token:
+        return redirect('/')
+
+    try:
+        _ = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+        resp = redirect('/')
+        resp.delete_cookie('token')
+        return resp
+    except jwt.ExpiredSignatureError:
+        return redirect('/')
+    except jwt.InvalidTokenError:
+        return redirect('/')
 
 
 if __name__ == '__main__':

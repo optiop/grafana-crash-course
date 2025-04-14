@@ -1,0 +1,121 @@
+{
+  "id": "grafana",
+  "realm": "grafana",
+  "displayName": "Grafana",
+  "enabled": true,
+  "registrationAllowed": false,
+  "rememberMe": true,
+  "resetPasswordAllowed": true,
+  "roles": {
+    "realm": [
+      {
+        "id": "b7ad0048-fb8c-45c0-89d6-821843bf1a53",
+        "name": "serviceAccount",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "grafana",
+        "attributes": {}
+      },
+      {
+        "id": "4ba9446c-7fb4-4678-87c0-b5fba1bd30c7",
+        "name": "user",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "grafana",
+        "attributes": {}
+      },
+      {
+        "id": "9f9d5481-a26a-4017-b106-0efbd7025c99",
+        "name": "admin",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "grafana",
+        "attributes": {}
+      },
+      {
+        "id": "584081fd-a041-4527-8a24-8be55bfcd1a1",
+        "name": "unicorn",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "grafana",
+        "attributes": {}
+      }
+    ]
+  },
+  "clients": [
+    {
+      "id": "5fcb0ba8-031c-451a-b108-055efa1ce20e",
+      "clientId": "grafana",
+      "name": "Grafana Auth",
+      "description": "Use to allow access for client to Grafana and Dashboard",
+      "rootUrl": "http://localhost:3000",
+      "adminUrl": "http://localhost:3000",
+      "baseUrl": "http://localhost:3000",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "cwrCP1uLwxo2IZSFewg1BTf3BgiUsZQp",
+      "redirectUris": ["http://localhost:3000/login/generic_oauth"],
+      "webOrigins": ["/*"],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "publicClient": false,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "oidc.ciba.grant.enabled": "false",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "client.secret.creation.time": "1709493045",
+        "backchannel.logout.session.required": "true",
+        "backchannel.logout.revoke.offline.tokens": "true"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
+      "protocolMappers": [
+        {
+          "name": "grafana",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "grafana",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "grafana",
+            "jsonType.label": "String"
+          }
+        }
+      ],
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt"
+      ],
+      "access": {
+        "view": true,
+        "configure": true,
+        "manage": true
+      }
+    }
+  ],
+  "attributes": {
+    "acr.loa.map": "{\"bronze\":\"0\",\"silver\":\"1\",\"gold\":\"2\"}"
+  }
+}

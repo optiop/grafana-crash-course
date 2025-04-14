@@ -1,0 +1,23 @@
+name: Auth-proxy
+
+services:
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    hostname: grafana
+    volumes:
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    hostname: backend
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - 8080:80
+    hostname: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf

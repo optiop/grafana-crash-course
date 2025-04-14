@@ -1,0 +1,9 @@
+apiVersion: 1
+
+providers:
+  - name: Default # A uniquely identifiable name for the provider
+    folder: Services # The folder where to place the dashboards
+    type: file
+    options:
+      path: /etc/grafana/provisioning/dashboards # Path where dashboard JSON files are stored
+      foldersFromFilesStructure: true # Automatically create folders based on the file structure

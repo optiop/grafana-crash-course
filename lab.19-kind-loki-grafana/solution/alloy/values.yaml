@@ -1,0 +1,2 @@
+serviceMonitor:
+  enable: true

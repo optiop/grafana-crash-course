@@ -14,6 +14,17 @@ services:
     ports:
       - "3001:3001"
 
+  prometheus:
+    image: prom/prometheus:latest
+    command:
+      - --config.file=/etc/prometheus.yaml
+      - --web.enable-remote-write-receiver
+      - --enable-feature=exemplar-storage
+      - --enable-feature=native-histograms
+    volumes:
+      - ./prometheus/prometheus.yaml:/etc/prometheus.yaml
+    ports:
+      - "9090:9090"
 
   alloy:
     image: grafana/alloy:v1.5.1
@@ -38,7 +49,7 @@ services:
     restart: always
     volumes:
       - ./loki/loki-config.yaml:/etc/loki/loki-config.yaml
-
+      - ./loki/rules/rules.yml:/etc/loki/rules/fake/rules.yml
 
   grafana:
     image: grafana/grafana:11.4.0

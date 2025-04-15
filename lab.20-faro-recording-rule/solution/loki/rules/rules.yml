@@ -1,8 +1,32 @@
 groups:
-  - name: test
-    interval: 1m
+  - name: faro
+    interval: 30s
     rules:
-    - record: lokiTest
-      expr: 0
-      labels:
-        cluster: "us-central1"
+      - record: ttfb
+        expr: avg_over_time({kind="measurement"} |= `ttfb` | logfmt | unwrap ttfb [5m]) by (app)
+        labels:
+          cluster: "us-central1"
+      - record: fcp
+        expr: avg_over_time({kind="measurement"} |= " fcp=" | logfmt | unwrap fcp [5m]) by (app)
+        labels:
+          cluster: "us-central1"
+      - record: cls
+        expr: avg_over_time({kind="measurement"} |= "cls" | logfmt | unwrap cls [5m]) by (app)
+        labels:
+          cluster: "us-central1"
+      - record: lcp
+        expr: avg_over_time({kind="measurement"} |= "lcp=" | logfmt | unwrap lcp [5m]) by (app)
+        labels:
+          cluster: "us-central1"
+      - record: fid
+        expr: avg_over_time({kind="measurement"} |= "fid=" | logfmt | unwrap fid [5m]) by (app)
+        labels:
+          cluster: "us-central1"
+      - record: inp
+        expr: avg_over_time({kind="measurement"} |= "inp=" | logfmt | unwrap inp [5m]) by (app)
+        labels:
+          cluster: "us-central1"
+      - record: exception
+        expr: sum(count_over_time({kind="exception"} [5m]))
+        labels:
+          cluster: "us-central1"

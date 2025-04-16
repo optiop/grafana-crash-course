@@ -26,7 +26,3 @@ groups:
         expr: avg_over_time({kind="measurement"} |= "inp=" | logfmt | unwrap inp [5m]) by (app)
         labels:
           cluster: "us-central1"
-      - record: exception
-        expr: sum(count_over_time({kind="exception"} [5m]))
-        labels:
-          cluster: "us-central1"

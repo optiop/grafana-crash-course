@@ -816,8 +816,8 @@
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
+        "type": "loki",
+        "uid": "${Log}"
       },
       "fieldConfig": {
         "defaults": {
@@ -867,12 +867,12 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
+            "type": "loki",
+            "uid": "${Log}"
           },
           "editorMode": "code",
-          "expr": "exception",
-          "range": true,
+          "expr": "sum(count_over_time({\n    kind=\"exception\",\n    app=\"$app\",\n    version=~\"$version\"\n} [$__range])) by (app)",
+          "queryType": "range",
           "refId": "A"
         }
       ],
@@ -881,7 +881,6 @@
     },
     {
       "datasource": {
-        "default": false,
         "type": "loki",
         "uid": "${Log}"
       },
@@ -1006,10 +1005,19 @@
           },
           "editorMode": "code",
           "expr": "count_over_time({\n    kind=\"exception\",\n    app=\"$app\",\n    version=~\"$version\"\n} [$__interval])",
-          "hide": false,
           "legendFormat": "errors",
           "queryType": "range",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "name": "Expression",
+            "type": "__expr__",
+            "uid": "__expr__"
+          },
+          "hide": false,
+          "refId": "B",
+          "type": "math"
         }
       ],
       "title": "Exceptions Over Time",
@@ -1805,6 +1813,10 @@
           "text": "dev01",
           "value": "dev01"
         },
+        "datasource": {
+          "type": "loki",
+          "uid": "${Log}"
+        },
         "definition": "",
         "label": "Cluster",
         "name": "cluster",
@@ -1823,6 +1835,10 @@
         "current": {
           "text": "fo11y-demo",
           "value": "fo11y-demo"
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "${Log}"
         },
         "definition": "",
         "label": "App",
@@ -1863,6 +1879,19 @@
         "refresh": 1,
         "regex": "",
         "type": "query"
+      },
+      {
+        "current": {
+          "text": "Loki",
+          "value": "P8E80F9AEF21F6940"
+        },
+        "label": "Log",
+        "name": "Log",
+        "options": [],
+        "query": "loki",
+        "refresh": 1,
+        "regex": "",
+        "type": "datasource"
       }
     ]
   },
@@ -1874,6 +1903,6 @@
   "timezone": "",
   "title": "Application / Frontend / Faro",
   "uid": "application-frontend-faro",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }

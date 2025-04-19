@@ -14,6 +14,13 @@ services:
     ports:
       - "3001:3001"
 
+  frontend2:
+    build:
+      context: ./frontend2
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3002"
+
   prometheus:
     image: prom/prometheus:latest
     command:

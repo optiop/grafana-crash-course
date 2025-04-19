@@ -681,6 +681,7 @@
           },
           "editorMode": "code",
           "expr": "avg_over_time(cls[$__range])",
+          "legendFormat": "CLS",
           "range": true,
           "refId": "A"
         }
@@ -1008,16 +1009,6 @@
           "legendFormat": "errors",
           "queryType": "range",
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "name": "Expression",
-            "type": "__expr__",
-            "uid": "__expr__"
-          },
-          "hide": false,
-          "refId": "B",
-          "type": "math"
         }
       ],
       "title": "Exceptions Over Time",
@@ -1381,7 +1372,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1450,7 +1442,6 @@
     },
     {
       "datasource": {
-        "default": false,
         "type": "loki",
         "uid": "${Log}"
       },
@@ -1497,7 +1488,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1552,7 +1544,6 @@
           },
           "editorMode": "code",
           "expr": "count_over_time({\n    kind=\"measurement\",\n    app=\"$app\",\n    version=~\"$version\"\n} |= \" ttfb=\" [$__interval])",
-          "legendFormat": "visits",
           "queryType": "range",
           "refId": "A"
         }
@@ -1596,7 +1587,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1698,7 +1690,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",

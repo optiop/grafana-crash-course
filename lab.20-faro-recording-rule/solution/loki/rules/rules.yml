@@ -3,11 +3,11 @@ groups:
     interval: 30s
     rules:
       - record: ttfb
-        expr: avg_over_time({kind="measurement"} |= `ttfb` | logfmt | unwrap ttfb [5m]) by (app)
+        expr: avg_over_time({kind="measurement"} |= `ttfb` | logfmt | unwrap ttfb [30s]) by (app)
         labels:
           cluster: "us-central1"
       - record: fcp
-        expr: avg_over_time({kind="measurement"} |= " fcp=" | logfmt | unwrap fcp [5m]) by (app)
+        expr: avg_over_time({kind="measurement"} |= " fcp=" | logfmt | unwrap fcp [30s]) by (app)
         labels:
           cluster: "us-central1"
       - record: cls
@@ -28,6 +28,14 @@ groups:
           cluster: "us-central1"
       - record: totalvisits
         expr: count_over_time({kind="measurement"} |= " ttfb=" [30d])
+        labels:
+          cluster: "us-central1"
+      - record: exceptions
+        expr : count_over_time({kind="exception"} [30s])
+        labels:
+          cluster: "us-central1"
+      - record: log_exceptions:rate_30s
+        expr: sum(rate({kind="exception"}[30s])) by (app)
         labels:
           cluster: "us-central1"
       - record: topbrowsers

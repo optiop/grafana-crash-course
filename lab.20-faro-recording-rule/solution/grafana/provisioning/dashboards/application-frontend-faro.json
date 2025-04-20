@@ -184,7 +184,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avg_over_time(fcp[$__range])",
+          "expr": "avg_over_time(fcp {app=\"$app\"} [$__range])",
           "range": true,
           "refId": "A"
         }
@@ -257,7 +257,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avg_over_time(cls[$__range])",
+          "expr": "avg_over_time(cls {app=\"$app\"} [$__range])",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -329,7 +329,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avg_over_time(lcp[$__range])",
+          "expr": "avg_over_time(lcp {app=\"$app\"} [$__range])",
           "range": true,
           "refId": "A"
         }
@@ -400,7 +400,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avg_over_time(fid[$__range])",
+          "expr": "avg_over_time(fid {app=\"$app\"}[$__range])",
           "range": true,
           "refId": "A"
         }
@@ -471,7 +471,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avg_over_time(inp[$__range])",
+          "expr": "avg_over_time(inp {app=\"$app\"}[$__range])",
           "range": true,
           "refId": "A"
         }
@@ -568,7 +568,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "quantile_over_time(0.75, fcp[5m])",
+          "expr": "quantile_over_time(0.75, fcp {app=\"$app\"} [5m])",
           "legendFormat": "FCP",
           "range": true,
           "refId": "A"
@@ -579,7 +579,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "quantile_over_time(0.75, lcp [5m])  ",
+          "expr": "quantile_over_time(0.75, lcp {app=\"$app\"}  [5m])  ",
           "legendFormat": "LCP",
           "range": true,
           "refId": "B"
@@ -680,7 +680,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avg_over_time(cls[$__range])",
+          "expr": "avg_over_time(cls {app=\"$app\"} [$__range])",
           "legendFormat": "CLS",
           "range": true,
           "refId": "A"
@@ -782,7 +782,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "quantile_over_time(0.75, fid[5m]) ",
+          "expr": "quantile_over_time(0.75, fid {app=\"$app\"} [5m]) ",
           "legendFormat": "FID",
           "range": true,
           "refId": "A"
@@ -793,7 +793,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "quantile_over_time(0.75, inp[5m])",
+          "expr": "quantile_over_time(0.75, inp {app=\"$app\"}[5m])",
           "legendFormat": "INP",
           "range": true,
           "refId": "B"
@@ -1221,9 +1221,8 @@
     },
     {
       "datasource": {
-        "default": false,
-        "type": "loki",
-        "uid": "${Log}"
+        "type": "prometheus",
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -1306,13 +1305,19 @@
       "targets": [
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${Log}"
+            "type": "prometheus",
+            "uid": "prometheus"
           },
+          "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "topk(10, \n    count by (\n        browser_name,\n        browser_version\n    ) (\n    count_over_time({\n        kind=\"measurement\",\n        app=\"$app\",\n        version=~\"$version\"\n    } | logfmt [$__range]))\n)",
-          "queryType": "instant",
-          "refId": "A"
+          "expr": "topbrowsers{app=\"$app\"}",
+          "format": "table",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
         }
       ],
       "title": "Top Browsers by Exception Count",
@@ -1321,15 +1326,16 @@
           "id": "organize",
           "options": {
             "excludeByName": {
-              "Time": true
+              "Time": true,
+              "Value": false,
+              "__name__": true,
+              "cluster": true,
+              "version": true
             },
+            "includeByName": {},
             "indexByName": {},
             "renameByName": {
-              "Value #A": "Count",
-              "browser_name": "Browser",
-              "browser_version": "Version",
-              "page_url": "URL",
-              "value": "Error"
+              "Value": "Count"
             }
           }
         }
@@ -1372,7 +1378,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1487,7 +1494,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1585,7 +1593,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1687,7 +1696,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1892,6 +1902,6 @@
   "timezone": "",
   "title": "Application / Frontend / Faro",
   "uid": "application-frontend-faro",
-  "version": 1,
+  "version": 3,
   "weekStart": ""
 }

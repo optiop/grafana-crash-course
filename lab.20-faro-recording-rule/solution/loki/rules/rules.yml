@@ -32,13 +32,14 @@ groups:
           cluster: "us-central1"
       - record: topbrowsers
         expr: |
-              topk(10, 
-              count by (
-              browser_name,
-              browser_version
-              ) (
-              count_over_time({
-              kind="measurement"
-              } | logfmt [5m]))
+         topk(
+          10, 
+          count by (
+            cluster,
+            app,
+            version,
+            browser_name,
+            browser_version
+          ) (count_over_time({kind="measurement"} | logfmt [5m])))
         labels:
           cluster: "us-central1"

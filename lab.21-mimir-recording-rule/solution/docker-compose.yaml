@@ -1,0 +1,12 @@
+services:
+  grafana:
+    image: grafana/grafana:11.4.0
+    environment:
+      GF_LOG_LEVEL: critical
+      GF_AUTH_ANONYMOUS_ENABLED: true
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: grafana
+      GF_SECURITY_ALLOW_EMBEDDING: true
+    ports:
+      - 3000:3000

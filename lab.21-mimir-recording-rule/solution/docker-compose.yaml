@@ -1,0 +1,38 @@
+services:
+  grafana:
+    image: grafana/grafana:11.4.0
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      GF_LOG_LEVEL: critical
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: grafana
+      GF_SECURITY_ALLOW_EMBEDDING: true
+    ports:
+      - 3000:3000
+
+  alloy:
+    image: grafana/alloy:latest
+    ports:
+      - 12345:12345
+    volumes:
+      - ./alloy/config.alloy:/etc/alloy/config.alloy
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /:/rootfs:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /sys/fs/cgroup:/cgroup:ro
+    command:
+      - run
+      - /etc/alloy/config.alloy
+      - --storage.path=/var/lib/alloy/data
+      - --server.http.listen-addr=0.0.0.0:12345
+
+  mimir:
+    image: grafana/mimir:latest
+    volumes:
+      - ./mimir/mimir-config.yaml:/etc/mimir/mimir.yaml
+      - ./mimir/rule:/tmp/rules/anonymous
+    command: ["-config.file=/etc/mimir/mimir.yaml"]
+    ports:
+      - "9009:9009"

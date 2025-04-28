@@ -1,0 +1,19 @@
+prometheus.exporter.cadvisor "lab21" {
+    docker_host = "unix:///var/run/docker.sock"
+    storage_duration = "5m"
+}
+
+prometheus.exporter.unix "server" {
+}
+
+prometheus.scrape "container_scrape" {
+    targets    = prometheus.exporter.cadvisor.lab21.targets
+    forward_to = [ prometheus.remote_write.lab.receiver ]
+    scrape_interval = "60s"
+}
+
+prometheus.remote_write "lab" {
+    endpoint {
+        url = "http://mimir:9009/api/v1/push"
+    }
+}

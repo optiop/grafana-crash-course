@@ -1,0 +1,15 @@
+groups:
+- name: container-rules
+  interval: 30s
+  rules:
+  - record: container:memory_rss_usage_bytes
+    expr: sum by (container_label_com_docker_swarm_service_name) (container_memory_rss)
+
+  - alert: HighContainerMemoryUsage
+    expr: container:memory_rss_usage_bytes > 500000000
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High memory usage detected"
+      description: "Container memory RSS usage is above 500MB for more than 2 minutes."

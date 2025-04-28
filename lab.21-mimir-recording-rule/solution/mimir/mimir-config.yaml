@@ -1,0 +1,37 @@
+target: all
+multitenancy_enabled: false
+
+server:
+  http_listen_port: 9009
+
+distributor:
+  ring:
+    kvstore:
+      store: inmemory
+
+ingester:
+  ring:
+    kvstore:
+      store: inmemory
+    replication_factor: 1
+
+blocks_storage:
+  backend: filesystem
+  tsdb:
+    dir: /tmp/mimir/tsdb
+  bucket_store:
+    sync_dir: /tmp/mimir/tsdb-sync
+
+compactor:
+  data_dir: /tmp/mimir/compactor
+
+ruler:
+  rule_path: /etc/mimir/rules.yaml
+  enable_api: true
+  poll_interval: 10s
+  evaluation_interval: 30s
+
+ruler_storage:
+  backend: local
+  local:
+    directory: /tmp/rules/

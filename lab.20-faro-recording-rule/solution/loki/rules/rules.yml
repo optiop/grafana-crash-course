@@ -1,8 +1,80 @@
 groups:
-  - name: test
-    interval: 1m
+  - name: faro
+    interval: 30s
     rules:
-    - record: lokiTest
-      expr: 0
-      labels:
-        cluster: "us-central1"
+      - record: app:ttfb:avg_5m
+        expr: avg_over_time({kind="measurement"} |= `ttfb` | logfmt | unwrap ttfb [5m]) by (app)
+
+      - record: app:fcp:avg_5m
+        expr: avg_over_time({kind="measurement"} |= " fcp=" | logfmt | unwrap fcp [5m]) by (app)
+
+      - record: app:cls:avg_5m
+        expr: avg_over_time({kind="measurement"} |= "cls" | logfmt | unwrap cls [5m]) by (app)
+
+      - record: app:lcp:avg_5m
+        expr: avg_over_time({kind="measurement"} |= "lcp=" | logfmt | unwrap lcp [5m]) by (app)
+
+      - record: app:fid:avg_5m
+        expr: avg_over_time({kind="measurement"} |= "fid=" | logfmt | unwrap fid [5m]) by (app)
+
+      - record: app:inp:avg_5m
+        expr: avg_over_time({kind="measurement"} |= "inp=" | logfmt | unwrap inp [5m]) by (app)
+
+      - record: app:visits:total_30d
+        expr: count_over_time({kind="measurement"} |= " ttfb=" [30d])
+
+      - record: app:exceptions:count_total
+        expr: sum(count_over_time({kind="exception"} [10m])) by (app)
+
+      - record: app:exceptions:count_5m
+        expr: count_over_time({kind="exception"} [5m])
+
+      - record: app:exceptions:top10_by_value_5m
+        expr: |
+          topk(10, count(count_over_time(
+            {kind="exception"} | logfmt [5m]
+          )) by (value, app))
+
+      - record: app:pageurl:top10_measurements_5m
+        expr: |
+          topk(10, count(count_over_time(
+            {kind="measurement"} | logfmt [5m]
+          )) by (page_url, app))
+
+      - record: app:measurement:top10_browsers_5m
+        expr: |
+          topk(10, 
+            count by (
+              browser_name,
+              browser_version,
+              app
+            ) (
+              count_over_time({
+                kind="measurement"
+              } | logfmt [5m])))
+
+      - record: app:measurement:popular_browsers_5m
+        expr: |
+          topk(10,
+            count(
+              count_over_time({
+                kind="measurement"
+              } | logfmt [5m])
+            ) by (browser_name, browser_version, app)
+          )
+
+      - record: app:events:top10_names_5m
+        expr: |
+          topk(10, 
+            count(
+              count_over_time({kind="event"} | logfmt [5m])
+            ) by (event_name, app)
+          )
+
+      - record: app:users:top50_sessions_5m
+        expr: |
+          topk(50, 
+            count(
+              count_over_time({kind="measurement"} | logfmt [5m])
+            ) by (session_id, browser_name, browser_os, app)
+          )

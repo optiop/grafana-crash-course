@@ -2,52 +2,79 @@ groups:
   - name: faro
     interval: 30s
     rules:
-      - record: ttfb
-        expr: avg_over_time({kind="measurement"} |= `ttfb` | logfmt | unwrap ttfb [30s]) by (app)
-        labels:
-          cluster: "us-central1"
-      - record: fcp
-        expr: avg_over_time({kind="measurement"} |= " fcp=" | logfmt | unwrap fcp [30s]) by (app)
-        labels:
-          cluster: "us-central1"
-      - record: cls
+      - record: app:ttfb:avg_5m
+        expr: avg_over_time({kind="measurement"} |= `ttfb` | logfmt | unwrap ttfb [5m]) by (app)
+
+      - record: app:fcp:avg_5m
+        expr: avg_over_time({kind="measurement"} |= " fcp=" | logfmt | unwrap fcp [5m]) by (app)
+
+      - record: app:cls:avg_5m
         expr: avg_over_time({kind="measurement"} |= "cls" | logfmt | unwrap cls [5m]) by (app)
-        labels:
-          cluster: "us-central1"
-      - record: lcp
+
+      - record: app:lcp:avg_5m
         expr: avg_over_time({kind="measurement"} |= "lcp=" | logfmt | unwrap lcp [5m]) by (app)
-        labels:
-          cluster: "us-central1"
-      - record: fid
+
+      - record: app:fid:avg_5m
         expr: avg_over_time({kind="measurement"} |= "fid=" | logfmt | unwrap fid [5m]) by (app)
-        labels:
-          cluster: "us-central1"
-      - record: inp
+
+      - record: app:inp:avg_5m
         expr: avg_over_time({kind="measurement"} |= "inp=" | logfmt | unwrap inp [5m]) by (app)
-        labels:
-          cluster: "us-central1"
-      - record: totalvisits
+
+      - record: app:visits:total_30d
         expr: count_over_time({kind="measurement"} |= " ttfb=" [30d])
-        labels:
-          cluster: "us-central1"
-      - record: exceptions
-        expr : count_over_time({kind="exception"} [30s])
-        labels:
-          cluster: "us-central1"
-      - record: log_exceptions:rate_30s
-        expr: sum(rate({kind="exception"}[30s])) by (app)
-        labels:
-          cluster: "us-central1"
-      - record: topbrowsers
+
+      - record: app:exceptions:count_total
+        expr: sum(count_over_time({kind="exception"} [10m])) by (app)
+
+      - record: app:exceptions:count_5m
+        expr: count_over_time({kind="exception"} [5m])
+
+      - record: app:exceptions:top10_by_value_5m
         expr: |
-         topk(
-          10, 
-          count by (
-            cluster,
-            app,
-            version,
-            browser_name,
-            browser_version
-          ) (count_over_time({kind="measurement"} | logfmt [5m])))
-        labels:
-          cluster: "us-central1"
+          topk(10, count(count_over_time(
+            {kind="exception"} | logfmt [5m]
+          )) by (value, app))
+
+      - record: app:pageurl:top10_measurements_5m
+        expr: |
+          topk(10, count(count_over_time(
+            {kind="measurement"} | logfmt [5m]
+          )) by (page_url, app))
+
+      - record: app:measurement:top10_browsers_5m
+        expr: |
+          topk(10, 
+            count by (
+              browser_name,
+              browser_version,
+              app
+            ) (
+              count_over_time({
+                kind="measurement"
+              } | logfmt [5m])))
+
+      - record: app:measurement:popular_browsers_5m
+        expr: |
+          topk(10,
+            count(
+              count_over_time({
+                kind="measurement"
+              } | logfmt [5m])
+            ) by (browser_name, browser_version, app)
+          )
+
+      - record: app:events:top10_names_5m
+        expr: |
+          topk(10, 
+            count(
+              count_over_time({kind="event"} | logfmt [5m])
+            ) by (event_name, app)
+          )
+
+      - record: app:users:top50_sessions_5m
+        expr: |
+          topk(50, 
+            count(
+              count_over_time({kind="measurement"} | logfmt [5m])
+            ) by (session_id, browser_name, browser_os, app)
+          )

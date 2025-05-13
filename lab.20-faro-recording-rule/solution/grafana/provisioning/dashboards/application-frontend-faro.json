@@ -32,7 +32,9 @@
       "icon": "external link",
       "includeVars": true,
       "keepTime": true,
-      "tags": ["Golden-signals"],
+      "tags": [
+        "Golden-signals"
+      ],
       "targetBlank": false,
       "title": "Golden Signals",
       "tooltip": "",
@@ -57,7 +59,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "${metric}"
       },
       "description": "TTFB is a metric that measures the time between the request for a resource and when the first byte of a response begins to arrive.\nhttps://web.dev/ttfb/",
       "fieldConfig": {
@@ -97,7 +99,9 @@
         "orientation": "auto",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -110,10 +114,13 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "${metric}"
           },
           "editorMode": "code",
-          "expr": "avg_over_time(ttfb {app=\"$app\"} [$__range])",
+          "expr": "app:ttfb:avg_5m{app=\"$app\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
@@ -124,7 +131,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "${metric}"
       },
       "description": "The First Contentful Paint (FCP) metric measures the time from when the page starts loading to when any part of the page's content is rendered on the screen. For this metric, \"content\" refers to text, images (including background images), <svg> elements, or non-white <canvas> elements.\nhttps://web.dev/fcp/",
       "fieldConfig": {
@@ -168,7 +175,9 @@
         "orientation": "auto",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -181,10 +190,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "${metric}"
           },
           "editorMode": "code",
-          "expr": "avg_over_time(fcp {app=\"$app\"} [$__range])",
+          "expr": "app:fcp:avg_5m{app=\"$app\"}",
           "range": true,
           "refId": "A"
         }
@@ -195,7 +204,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "${metric}"
       },
       "description": "Cumulative Layout Shift (CLS): measures visual stability. To provide a good user experience, pages should maintain a CLS of 0.1. or less.\nhttps://web.dev/cls/",
       "fieldConfig": {
@@ -241,7 +250,9 @@
         "orientation": "auto",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -254,10 +265,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "${metric}"
           },
           "editorMode": "code",
-          "expr": "avg_over_time(cls {app=\"$app\"} [$__range])",
+          "expr": "app:cls:avg_5m{app=\"$app\"}",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -269,7 +280,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "${metric}"
       },
       "description": "Largest Contentful Paint (LCP): measures loading performance. To provide a good user experience, LCP should occur within 2.5 seconds of when the page first starts loading.\nhttps://web.dev/lcp/",
       "fieldConfig": {
@@ -313,7 +324,9 @@
         "orientation": "auto",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -326,10 +339,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "${metric}"
           },
           "editorMode": "code",
-          "expr": "avg_over_time(lcp {app=\"$app\"} [$__range])",
+          "expr": "app:lcp:avg_5m{app=\"$app\"}",
           "range": true,
           "refId": "A"
         }
@@ -340,7 +353,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "${metric}"
       },
       "description": "First Input Delay (FID): measures interactivity. To provide a good user experience, pages should have a FID of 100 milliseconds or less.\nhttps://web.dev/fid/",
       "fieldConfig": {
@@ -384,7 +397,9 @@
         "orientation": "auto",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -397,10 +412,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "${metric}"
           },
           "editorMode": "code",
-          "expr": "avg_over_time(fid {app=\"$app\"}[$__range])",
+          "expr": "app:fid:avg_5m{app=\"$app\"}",
           "range": true,
           "refId": "A"
         }
@@ -411,7 +426,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "${metric}"
       },
       "description": "",
       "fieldConfig": {
@@ -455,7 +470,9 @@
         "orientation": "auto",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -468,10 +485,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "${metric}"
           },
           "editorMode": "code",
-          "expr": "avg_over_time(inp {app=\"$app\"}[$__range])",
+          "expr": "app:inp:avg_5m{app=\"$app\"}",
           "range": true,
           "refId": "A"
         }
@@ -482,7 +499,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "${metric}"
       },
       "description": "TTFB is a metric that measures the time between the request for a resource and when the first byte of a response begins to arrive.\nhttps://web.dev/ttfb/",
       "fieldConfig": {
@@ -565,24 +582,35 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "${metric}"
           },
           "editorMode": "code",
-          "expr": "quantile_over_time(0.75, fcp {app=\"$app\"} [5m])",
-          "legendFormat": "FCP",
+          "expr": "app:ttfb:avg_30s{app=\"$app\"}",
           "range": true,
           "refId": "A"
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "${metric}"
           },
           "editorMode": "code",
-          "expr": "quantile_over_time(0.75, lcp {app=\"$app\"}  [5m])  ",
-          "legendFormat": "LCP",
+          "expr": "app:fcp:avg_30s{app=\"$app\"}",
           "range": true,
           "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${metric}"
+          },
+          "editorMode": "code",
+          "expr": "app:lcp:avg_5m{app=\"$app\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "C"
         }
       ],
       "title": "Page Load, p75",
@@ -591,7 +619,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "${metric}"
       },
       "description": "Cumulative Layout Shift (CLS): measures visual stability. To provide a good user experience, pages should maintain a CLS of 0.1. or less.\nhttps://web.dev/cls/",
       "fieldConfig": {
@@ -677,10 +705,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "${metric}"
           },
           "editorMode": "code",
-          "expr": "avg_over_time(cls {app=\"$app\"} [$__range])",
+          "expr": "app:cls:avg_5m{app=\"$app\"}",
           "legendFormat": "CLS",
           "range": true,
           "refId": "A"
@@ -692,7 +720,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "${metric}"
       },
       "description": "First Input Delay (FID): measures interactivity. To provide a good user experience, pages should have a FID of 100 milliseconds or less.\nhttps://web.dev/fid/",
       "fieldConfig": {
@@ -779,10 +807,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "${metric}"
           },
           "editorMode": "code",
-          "expr": "quantile_over_time(0.75, fid {app=\"$app\"} [5m]) ",
+          "expr": "app:fid:avg_5m{app=\"$app\"}",
           "legendFormat": "FID",
           "range": true,
           "refId": "A"
@@ -790,10 +818,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "${metric}"
           },
           "editorMode": "code",
-          "expr": "quantile_over_time(0.75, inp {app=\"$app\"}[5m])",
+          "expr": "app:inp:avg_5m{app=\"$app\"}",
           "legendFormat": "INP",
           "range": true,
           "refId": "B"
@@ -817,8 +845,8 @@
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${Log}"
+        "type": "prometheus",
+        "uid": "${metric}"
       },
       "fieldConfig": {
         "defaults": {
@@ -856,7 +884,9 @@
         "orientation": "auto",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -868,12 +898,12 @@
       "targets": [
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${Log}"
+            "type": "prometheus",
+            "uid": "${metric}"
           },
           "editorMode": "code",
-          "expr": "sum(count_over_time({\n    kind=\"exception\",\n    app=\"$app\",\n    version=~\"$version\"\n} [$__range])) by (app)",
-          "queryType": "range",
+          "expr": "app:exceptions:count_total{app=\"$app\"}",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -882,8 +912,8 @@
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${Log}"
+        "type": "prometheus",
+        "uid": "${metric}"
       },
       "fieldConfig": {
         "defaults": {
@@ -960,7 +990,9 @@
               "id": "byNames",
               "options": {
                 "mode": "exclude",
-                "names": ["errors"],
+                "names": [
+                  "errors"
+                ],
                 "prefix": "All except:",
                 "readOnly": true
               }
@@ -1001,13 +1033,12 @@
       "targets": [
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${Log}"
+            "type": "prometheus",
+            "uid": "${metric}"
           },
           "editorMode": "code",
-          "expr": "count_over_time({\n    kind=\"exception\",\n    app=\"$app\",\n    version=~\"$version\"\n} [$__interval])",
-          "legendFormat": "errors",
-          "queryType": "range",
+          "expr": "app:exceptions:count_5m{app=\"$app\"}",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -1016,9 +1047,8 @@
     },
     {
       "datasource": {
-        "default": false,
-        "type": "loki",
-        "uid": "${Log}"
+        "type": "prometheus",
+        "uid": "${metric}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1074,7 +1104,9 @@
         "footer": {
           "countRows": false,
           "fields": "",
-          "reducer": ["sum"],
+          "reducer": [
+            "sum"
+          ],
           "show": false
         },
         "showHeader": true,
@@ -1089,12 +1121,14 @@
       "targets": [
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${Log}"
+            "type": "prometheus",
+            "uid": "${metric}"
           },
           "editorMode": "code",
-          "expr": "topk(10, count(count_over_time({\n    kind=\"exception\",\n    app=\"$app\",\n    version=~\"$version\"\n} | logfmt [$__range])) by (value))",
-          "queryType": "instant",
+          "expr": "app:exceptions:top10_by_value_5m{app=\"$app\"}",
+          "format": "table",
+          "legendFormat": "__auto",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -1118,9 +1152,8 @@
     },
     {
       "datasource": {
-        "default": false,
-        "type": "loki",
-        "uid": "${Log}"
+        "type": "prometheus",
+        "uid": "${metric}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1176,9 +1209,12 @@
         "footer": {
           "countRows": false,
           "fields": "",
-          "reducer": ["sum"],
+          "reducer": [
+            "sum"
+          ],
           "show": false
         },
+        "frameIndex": 1,
         "showHeader": true,
         "sortBy": [
           {
@@ -1191,38 +1227,23 @@
       "targets": [
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${Log}"
+            "type": "prometheus",
+            "uid": "${metric}"
           },
           "editorMode": "code",
-          "expr": "topk(10, count(count_over_time({\n    kind=\"measurement\",\n    app=\"$app\",\n    verion=~\"$version\"\n} | logfmt [$__range])) by (page_url))",
-          "queryType": "instant",
+          "expr": "app:pageurl:top10_measurements_5m{app=\"$app\"}",
+          "format": "table",
+          "range": true,
           "refId": "A"
         }
       ],
       "title": "Top URLs by Exception Count",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true
-            },
-            "indexByName": {},
-            "renameByName": {
-              "Value #A": "Count",
-              "page_url": "URL",
-              "value": "Error"
-            }
-          }
-        }
-      ],
       "type": "table"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "${metric}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1290,7 +1311,9 @@
         "footer": {
           "countRows": false,
           "fields": "",
-          "reducer": ["sum"],
+          "reducer": [
+            "sum"
+          ],
           "show": false
         },
         "showHeader": true,
@@ -1306,11 +1329,11 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "${metric}"
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "topbrowsers{app=\"$app\"}",
+          "expr": "app:measurement:top10_browsers_5m{app=\"$app\"}",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -1357,9 +1380,8 @@
     },
     {
       "datasource": {
-        "default": false,
-        "type": "loki",
-        "uid": "${Log}"
+        "type": "prometheus",
+        "uid": "${metric}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1402,7 +1424,9 @@
         "footer": {
           "countRows": false,
           "fields": "",
-          "reducer": ["sum"],
+          "reducer": [
+            "sum"
+          ],
           "show": false
         },
         "showHeader": true,
@@ -1417,13 +1441,13 @@
       "targets": [
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${Log}"
+            "type": "prometheus",
+            "uid": "${metric}"
           },
           "editorMode": "code",
-          "expr": "topk(10, count(\n    count_over_time({\n        kind=\"measurement\",\n        app=\"$app\",\n        version=~\"$version\"\n    }  | logfmt [$__range])\n) by (browser_name, browser_version))",
-          "hide": false,
-          "queryType": "instant",
+          "expr": "app:measurement:popular_browsers_5m{app=\"$app\"}",
+          "format": "table",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -1448,8 +1472,8 @@
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${Log}"
+        "type": "prometheus",
+        "uid": "${metric}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1545,12 +1569,12 @@
       "targets": [
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${Log}"
+            "type": "prometheus",
+            "uid": "${metric}"
           },
           "editorMode": "code",
-          "expr": "count_over_time({\n    kind=\"measurement\",\n    app=\"$app\",\n    version=~\"$version\"\n} |= \" ttfb=\" [$__interval])",
-          "queryType": "range",
+          "expr": "app:visits:total_30d{app=\"$app\"}",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -1572,9 +1596,8 @@
     },
     {
       "datasource": {
-        "default": false,
-        "type": "loki",
-        "uid": "${Log}"
+        "type": "prometheus",
+        "uid": "${metric}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1630,7 +1653,9 @@
         "footer": {
           "countRows": false,
           "fields": "",
-          "reducer": ["sum"],
+          "reducer": [
+            "sum"
+          ],
           "show": false
         },
         "showHeader": true,
@@ -1645,12 +1670,13 @@
       "targets": [
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${Log}"
+            "type": "prometheus",
+            "uid": "${metric}"
           },
           "editorMode": "code",
-          "expr": "topk(10, count(count_over_time({\n    kind=\"event\",\n    app=\"$app\",\n    version=~\"$version\"\n} | logfmt [$__range])) by (event_name))",
-          "queryType": "instant",
+          "expr": "app:events:top10_names_5m{app=\"$app\"}",
+          "format": "table",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -1675,9 +1701,8 @@
     },
     {
       "datasource": {
-        "default": false,
-        "type": "loki",
-        "uid": "${Log}"
+        "type": "prometheus",
+        "uid": "${metric}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1757,7 +1782,9 @@
         "footer": {
           "countRows": false,
           "fields": "",
-          "reducer": ["sum"],
+          "reducer": [
+            "sum"
+          ],
           "show": false
         },
         "showHeader": true,
@@ -1772,12 +1799,13 @@
       "targets": [
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${Log}"
+            "type": "prometheus",
+            "uid": "${metric}"
           },
           "editorMode": "code",
-          "expr": "topk(50, count(count_over_time({\n    kind=\"measurement\",\n    app=\"$app\",\n    version=~\"$version\"\n} | logfmt [$__range])) by (session_id, browser_name, browser_os))",
-          "queryType": "instant",
+          "expr": "app:users:top50_sessions_5m{app=\"$app\"}",
+          "format": "table",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -1804,7 +1832,12 @@
   "preload": false,
   "refresh": "",
   "schemaVersion": 40,
-  "tags": ["Logs", "Frontend", "Faro", "Grafana"],
+  "tags": [
+    "Logs",
+    "Frontend",
+    "Faro",
+    "Grafana"
+  ],
   "templating": {
     "list": [
       {
@@ -1891,6 +1924,19 @@
         "refresh": 1,
         "regex": "",
         "type": "datasource"
+      },
+      {
+        "current": {
+          "text": "Prometheus",
+          "value": "prometheus"
+        },
+        "label": "Metric",
+        "name": "metric",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "type": "datasource"
       }
     ]
   },
@@ -1902,6 +1948,6 @@
   "timezone": "",
   "title": "Application / Frontend / Faro",
   "uid": "application-frontend-faro",
-  "version": 3,
+  "version": 1,
   "weekStart": ""
 }

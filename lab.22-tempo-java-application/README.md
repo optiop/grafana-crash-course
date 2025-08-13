@@ -1,14 +1,1 @@
-# Java Zero Code Agent
-
-## for run application
-``` bash 
-cd java/
-java \
-  -javaagent:./opentelemetry-javaagent.jar \
-  -Dotel.service.name=simple-java-app \
-  -Dotel.traces.exporter=otlp \
-  -Dotel.exporter.otlp.protocol=http/protobuf \
-  -Dotel.exporter.otlp.endpoint=http://localhost:4318 \
-  -Dotel.exporter.otlp.insecure=true \
-  app.java
-  ```
+# Java Agent Auto Instrumentation

@@ -1,0 +1,32 @@
+services:
+  tempo:
+    image: grafana/tempo:2.4.1
+    ports:
+      - "4318:4318"
+      - "4317:4317"
+      - "3200:3200"
+    command: ["--config.file=/etc/tempo.yaml"]
+    volumes:
+      - ./tempo/tempo.yaml:/etc/tempo.yaml
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+
+  simple-java-app:
+    build: ./app
+    depends_on:
+      - tempo
+    ports:
+      - "8081:8081"
+    environment:
+      OTEL_SERVICE_NAME: "simple-java-app"
+      OTEL_TRACES_EXPORTER: "otlp"
+      OTEL_METRICS_EXPORTER: "none"
+      OTEL_LOGS_EXPORTER: "none"
+      OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://tempo:4318"
+      OTEL_EXPORTER_OTLP_INSECURE: "true"

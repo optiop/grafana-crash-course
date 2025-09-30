@@ -18,7 +18,7 @@ COPY . .
 RUN CGO_ENABLED=1 GOOS=linux go build -a -ldflags '-linkmode external -extldflags "-static"' -o main .
 
 # Stage 2: Create the minimal runtime image
-FROM alpine:3.18
+FROM alpine:3.22
 
 # Install runtime dependencies
 RUN apk add --no-cache postgresql-client ca-certificates libc6-compat tzdata

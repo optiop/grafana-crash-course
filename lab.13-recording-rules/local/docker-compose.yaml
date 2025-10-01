@@ -2,7 +2,7 @@
 services:
   # And put them in a Grafana Alloy pipeline...
   alloy:
-    image: grafana/alloy:v1.5.1
+    image: grafana/alloy:v1.11.0
     volumes:
       - ./alloy/config.alloy:/etc/alloy/config.alloy
       - /:/rootfs:ro

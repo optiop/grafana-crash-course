@@ -79,7 +79,7 @@ services:
       - ./loki/loki-config.yaml:/etc/loki/loki-config.yaml
 
   grafana:
-    image: grafana/grafana:11.2.0
+    image: grafana/grafana:11.6.6
     volumes:
       - ./grafana/provisioning/:/etc/grafana/provisioning/
     environment:

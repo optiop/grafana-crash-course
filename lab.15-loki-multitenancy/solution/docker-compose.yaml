@@ -1,6 +1,6 @@
  services:
    loki:
-     image: grafana/loki:3.0.0
+     image: grafana/loki:3.5.5
      hostname: loki
      volumes:
        - ./loki/local-config.yaml:/etc/loki/local-config.yaml

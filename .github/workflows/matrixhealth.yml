@@ -15,7 +15,7 @@ jobs:
       matrix: ${{ steps.detect.outputs.matrix }}
     steps:
       - name: Checkout Repository with Full History
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0  # Fetch all history to access previous commits
 
@@ -54,7 +54,7 @@ jobs:
       fail-fast: false  # Allows other jobs to continue even if one fails
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Pull Docker Compose Images
         run: docker compose --file ${{ matrix.directory }}/solution/docker-compose.yaml pull

@@ -1,0 +1,58 @@
+services:
+
+  # ── Java Hello World app — exposes remote JMX on port 9999 ────────────────
+  java-app:
+    build:
+      context: ./java-app
+      dockerfile: Dockerfile
+    container_name: java-app
+    hostname: java-app
+    ports:
+      - "8080:8080"   # Hello World HTTP endpoint  →  http://localhost:8080
+      - "9999:9999"   # Remote JMX RMI  →  used by jmx-exporter
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - jmx
+
+  # ── Standalone JMX Exporter — scrapes java-app:9999 via RMI ───────────────
+  jmx-exporter:
+    image: bitnami/jmx-exporter:latest
+    container_name: jmx-exporter
+    ports:
+      - "9090:5556"   # JMX metrics  →  http://localhost:9090/metrics
+    volumes:
+      - ./jmx-exporter/config.yaml:/opt/bitnami/jmx-exporter/etc/config.yml:ro
+    command: ["5556", "/opt/bitnami/jmx-exporter/etc/config.yml"]
+    depends_on:
+      java-app:
+        condition: service_healthy
+    networks:
+      - jmx
+
+  # ── Prometheus scrapes JMX metrics from jmx-exporter:5556 ────────────────
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9091:9090"   # Prometheus UI  →  http://localhost:9091
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/etc/prometheus/console_libraries"
+      - "--web.console.templates=/etc/prometheus/consoles"
+      - "--web.enable-lifecycle"
+    depends_on:
+      java-app:
+        condition: service_healthy
+    networks:
+      - jmx
+
+networks:
+  jmx:
+    driver: bridge

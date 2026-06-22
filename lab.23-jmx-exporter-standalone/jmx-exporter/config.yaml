@@ -1,0 +1,82 @@
+---
+# Standalone JMX Exporter configuration
+# Connects to java-app over RMI and exposes metrics for Prometheus
+hostPort: java-app:9999
+ssl: false
+startDelaySeconds: 0
+lowercaseOutputName: true
+lowercaseOutputLabelNames: true
+
+rules:
+  # Custom application metrics (RequestStats MBean)
+  - pattern: 'com.example<type=RequestStats><>TotalRequests'
+    name: app_total_requests
+    help: "Total HTTP requests handled by the application"
+    type: COUNTER
+
+  - pattern: 'com.example<type=RequestStats><>TotalResponseTimeMs'
+    name: app_total_response_time_ms
+    help: "Cumulative response time in milliseconds"
+    type: COUNTER
+
+  # JVM Heap Memory
+  - pattern: 'java.lang<type=Memory><HeapMemoryUsage>used'
+    name: jvm_memory_heap_used_bytes
+    help: "JVM heap memory used"
+    type: GAUGE
+
+  - pattern: 'java.lang<type=Memory><HeapMemoryUsage>max'
+    name: jvm_memory_heap_max_bytes
+    help: "JVM heap memory max"
+    type: GAUGE
+
+  - pattern: 'java.lang<type=Memory><HeapMemoryUsage>committed'
+    name: jvm_memory_heap_committed_bytes
+    help: "JVM heap memory committed"
+    type: GAUGE
+
+  # JVM Non-Heap Memory
+  - pattern: 'java.lang<type=Memory><NonHeapMemoryUsage>used'
+    name: jvm_memory_nonheap_used_bytes
+    help: "JVM non-heap memory used"
+    type: GAUGE
+
+  # Garbage Collection
+  - pattern: 'java.lang<type=GarbageCollector, name=(.+)><>CollectionCount'
+    name: jvm_gc_collection_count_total
+    labels:
+      gc: "$1"
+    help: "GC collection count"
+    type: COUNTER
+
+  - pattern: 'java.lang<type=GarbageCollector, name=(.+)><>CollectionTime'
+    name: jvm_gc_collection_time_ms_total
+    labels:
+      gc: "$1"
+    help: "GC collection time in ms"
+    type: COUNTER
+
+  # Threads
+  - pattern: 'java.lang<type=Threading><>ThreadCount'
+    name: jvm_threads_current
+    help: "Current thread count"
+    type: GAUGE
+
+  - pattern: 'java.lang<type=Threading><>DaemonThreadCount'
+    name: jvm_threads_daemon
+    help: "Daemon thread count"
+    type: GAUGE
+
+  # CPU
+  - pattern: 'java.lang<type=OperatingSystem><>ProcessCpuLoad'
+    name: jvm_cpu_process_load
+    help: "JVM process CPU load (0.0 - 1.0)"
+    type: GAUGE
+
+  - pattern: 'java.lang<type=OperatingSystem><>AvailableProcessors'
+    name: jvm_available_processors
+    help: "Number of available processors"
+    type: GAUGE
+
+  # Catch-all for any other MBeans
+  - pattern: ".*"

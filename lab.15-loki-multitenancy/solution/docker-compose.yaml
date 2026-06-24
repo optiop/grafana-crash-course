@@ -40,7 +40,7 @@
       - --server.http.listen-addr=0.0.0.0:12345
 
    grafana:
-     image: grafana/grafana:11.6.6
+     image: grafana/grafana:11.6.16
      environment:
        - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
        - GF_AUTH_ANONYMOUS_ENABLED=true

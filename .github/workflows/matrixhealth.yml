@@ -3,7 +3,7 @@ name: Check Health for Lab Projects
 on:
   push:
     paths:
-      - "lab.*/**"  # Runs only when files in any lab directory change
+      - "lab*/**"  # Runs only when files in any lab directory change
     tags:
       - v*
      

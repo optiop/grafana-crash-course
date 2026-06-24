@@ -20,7 +20,7 @@ services:
       - ./loki/loki-alert-rules.yaml:/etc/loki/rules/fake/alert-rules.yaml
 
   grafana:
-    image: grafana/grafana:11.6.6
+    image: grafana/grafana:11.6.16
     volumes:
       - ./grafana/provisioning:/etc/grafana/provisioning
     environment:

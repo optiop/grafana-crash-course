@@ -43,7 +43,7 @@ services:
       - ./loki/rules/rules.yml:/etc/loki/rules/fake/rules.yml
 
   grafana:
-    image: grafana/grafana:11.6.6
+    image: grafana/grafana:11.6.16
     volumes:
       - ./grafana/provisioning/:/etc/grafana/provisioning/
     environment:

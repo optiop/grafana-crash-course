@@ -1,0 +1,15 @@
+---
+startDelaySeconds: 0
+lowercaseOutputName: true
+lowercaseOutputLabelNames: true
+rules:
+  # Custom app metrics: com.example:type=RequestStats -> hello_world_<attribute>
+  - pattern: 'com.example<type=(\w+)><>(\w+)'
+    name: hello_world_$2
+    labels:
+      type: "$1"
+    help: "Hello World JMX metric"
+    type: GAUGE
+
+  # Pass through all remaining JVM built-in metrics (java.lang, java.nio, etc.)
+  - pattern: ".*"

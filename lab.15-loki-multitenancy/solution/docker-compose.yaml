@@ -11,7 +11,7 @@
 
    alloy-1:
     # https://hub.docker.com/r/grafana/alloy/tags
-    image: grafana/alloy:v1.11.0
+    image: grafana/alloy:v1.19.2
     privileged: true
     ports:
       - 12345:12345
@@ -26,7 +26,7 @@
 
    alloy-2:
     # https://hub.docker.com/r/grafana/alloy/tags
-    image: grafana/alloy:v1.11.0
+    image: grafana/alloy:v1.19.2
     privileged: true
     ports:
       - 12346:12345

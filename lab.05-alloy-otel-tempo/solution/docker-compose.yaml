@@ -22,7 +22,7 @@ services:
       - "9090:9090"
 
   alloy:
-    image: grafana/alloy:v1.11.0
+    image: grafana/alloy:v1.19.2
     volumes:
       - ./alloy/config.alloy:/etc/alloy/config.alloy
     command:
